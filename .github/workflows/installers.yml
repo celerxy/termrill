@@ -1,0 +1,133 @@
+name: Test installers
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: installers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 同一提交必须先通过现有完整检查，包括 Windows 本机 SSH fixture。
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  package:
+    needs: checks
+    name: Package ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-x64
+            runner: windows-2022
+            target: x86_64-pc-windows-msvc
+            bundles: nsis
+          - name: macos-arm64
+            runner: macos-15
+            target: aarch64-apple-darwin
+            bundles: dmg
+          - name: macos-x64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+            bundles: dmg
+          - name: linux-x64
+            runner: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            bundles: deb,appimage
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CARGO_BUILD_JOBS: '2'
+      CARGO_INCREMENTAL: '0'
+      # GitHub Linux runner 无需挂载 FUSE 即可运行打包工具。
+      APPIMAGE_EXTRACT_AND_RUN: '1'
+    steps:
+      - name: Preserve LF checkout
+        run: git config --global core.autocrlf false
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Linux dependencies
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config clang libssl-dev liblzma-dev libdbus-1-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev libxdo-dev patchelf xdg-utils
+      - name: Rust toolchain
+        id: rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt --component clippy
+          if ($LASTEXITCODE -ne 0) { throw 'Rust toolchain preparation failed.' }
+          rustup default stable
+          if ($LASTEXITCODE -ne 0) { throw 'Rust toolchain selection failed.' }
+          rustup target add $env:BUNDLE_TARGET
+          if ($LASTEXITCODE -ne 0) { throw 'Rust target preparation failed.' }
+          "version=$((rustc --version) -replace ' ', '-')" >> $env:GITHUB_OUTPUT
+        env:
+          BUNDLE_TARGET: ${{ matrix.target }}
+      - name: Cargo cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: installers-${{ matrix.name }}-${{ steps.rust.outputs.version }}-${{ hashFiles('src-tauri/Cargo.lock', 'src-tauri/Cargo.toml') }}-${{ github.sha }}
+          restore-keys: |
+            installers-${{ matrix.name }}-${{ steps.rust.outputs.version }}-${{ hashFiles('src-tauri/Cargo.lock', 'src-tauri/Cargo.toml') }}-
+      - name: Install dependencies
+        run: |
+          npm ci
+          if ($LASTEXITCODE -ne 0) { throw 'npm dependency installation failed.' }
+          cargo fetch --locked --manifest-path src-tauri/Cargo.toml
+          if ($LASTEXITCODE -ne 0) { throw 'Cargo dependency preparation failed.' }
+      - name: Platform checks
+        run: |
+          npm run check:versions
+          if ($LASTEXITCODE -ne 0) { throw 'Application version check failed.' }
+          npm run format:check
+          if ($LASTEXITCODE -ne 0) { throw 'Format check failed.' }
+          npm test
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend tests failed.' }
+          cargo check --locked --offline --manifest-path src-tauri/Cargo.toml --target $env:BUNDLE_TARGET
+          if ($LASTEXITCODE -ne 0) { throw 'Rust check failed.' }
+          cargo clippy --locked --offline --manifest-path src-tauri/Cargo.toml --target $env:BUNDLE_TARGET --all-targets -- -D warnings
+          if ($LASTEXITCODE -ne 0) { throw 'Clippy failed.' }
+        env:
+          BUNDLE_TARGET: ${{ matrix.target }}
+      - name: Build unsigned test installers
+        run: |
+          # target 缓存可能含旧版本安装包，只清理已确认处于当前工作区 target 下的 bundle。
+          $targetRoot = [System.IO.Path]::GetFullPath((Join-Path $env:GITHUB_WORKSPACE 'src-tauri/target')) + [System.IO.Path]::DirectorySeparatorChar
+          $bundleRoot = [System.IO.Path]::GetFullPath((Join-Path $targetRoot "$env:BUNDLE_TARGET/release/bundle"))
+          if (-not $bundleRoot.StartsWith($targetRoot, [System.StringComparison]::Ordinal)) { throw 'Bundle path is outside target directory.' }
+          if (Test-Path -LiteralPath $bundleRoot) { Remove-Item -LiteralPath $bundleRoot -Recurse -Force }
+          npm run tauri -- build --ci --target $env:BUNDLE_TARGET --bundles $env:BUNDLE_KINDS -- --locked
+          if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
+          node scripts/collect-installers.mjs $env:BUNDLE_TARGET $env:BUNDLE_KINDS
+          if ($LASTEXITCODE -ne 0) { throw 'Installer collection failed.' }
+        env:
+          BUNDLE_TARGET: ${{ matrix.target }}
+          BUNDLE_KINDS: ${{ matrix.bundles }}
+      - name: Upload installers and SHA256
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: TermRill-${{ matrix.name }}-${{ github.sha }}
+          path: artifacts/${{ matrix.target }}/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

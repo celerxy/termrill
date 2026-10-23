@@ -1,0 +1,56 @@
+.termrill-error {
+  margin: 8px 16px;
+  padding: 12px 14px;
+  border: 1px solid #f0dce1;
+  border-radius: 9px;
+  background: #fff8f9;
+  color: #a94156;
+  font-size: 12px;
+  flex-shrink: 0;
+  max-height: 240px;
+  overflow: auto;
+}
+.termrill-error-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.termrill-error p {
+  margin: 7px 0;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.termrill-error-advice {
+  color: #626b80;
+}
+.termrill-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.termrill-error .termrill-error-actions button,
+.termrill-error .termrill-diagnostic button {
+  padding: 5px 8px;
+  border: 1px solid #e6dce4;
+  border-radius: 6px;
+  background: white;
+  color: #575272;
+  font-size: 11px;
+}
+.termrill-diagnostic {
+  margin-top: 10px;
+}
+.termrill-diagnostic pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #626b80;
+  user-select: text;
+  font-size: 11px;
+}
+.termrill-diagnostic > span {
+  margin-left: 8px;
+  color: #626b80;
+}
+.transfer-item .termrill-error {
+  margin: 0 0 10px 30px;
+}

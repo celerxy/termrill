@@ -1,0 +1,65 @@
+.path-bar > .directory-locations {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+.directory-locations > button {
+  padding: 5px;
+  color: #8c93a6;
+}
+.directory-locations > button[aria-pressed='true'] {
+  color: #6763ed;
+}
+.directory-location-popover {
+  position: fixed;
+  z-index: 150;
+  width: min(350px, 70vw);
+  max-height: 340px;
+  overflow: auto;
+  border: 1px solid #e9ebf3;
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 10px 30px #2020401a;
+}
+.directory-location-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  padding: 6px;
+  font-size: 11px;
+}
+.directory-location-heading button {
+  margin-left: auto;
+  padding: 2px 5px;
+  font-size: 11px;
+}
+.directory-location-row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.directory-location-row > button:first-child {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 7px;
+  font-size: 12px;
+}
+.directory-location-row > button:last-child:not(:first-child) {
+  padding: 5px;
+}
+.directory-location-popover p,
+.directory-location-popover > small {
+  display: block;
+  margin: 6px;
+  color: var(--muted);
+  font-size: 11px;
+}

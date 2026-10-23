@@ -1,0 +1,356 @@
+/* 所有规则限定在传输确认弹窗内，防止页面 header/footer 与通用表单规则侵入。 */
+.modal.transfer-confirm {
+  width: min(760px, calc(100vw - 40px));
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  color: #242b49;
+  outline: none;
+}
+.modal.transfer-confirm h2,
+.modal.transfer-confirm p {
+  margin: 0;
+}
+.transfer-confirm button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 18px;
+  border: 1px solid #dce0ee;
+  border-radius: 9px;
+  background: white;
+  color: #424c6b;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.transfer-confirm button:hover:not(:disabled) {
+  background: #f7f5ff;
+  border-color: #cfc6f5;
+}
+.transfer-confirm button.primary {
+  background: #6856e9;
+  border-color: #6856e9;
+  color: white;
+  box-shadow: 0 4px 12px #6856e91a;
+}
+.transfer-confirm button.primary:hover:not(:disabled) {
+  background: #5c49db;
+  border-color: #5c49db;
+}
+.transfer-confirm button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.transfer-confirm button:focus-visible,
+.transfer-confirm input:focus-visible {
+  outline: 2px solid #8974ed;
+  outline-offset: 3px;
+}
+.transfer-confirm .transfer-confirm-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 0;
+  flex-shrink: 0;
+}
+.transfer-confirm-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #ede8ff;
+  color: #7158ea;
+}
+.transfer-confirm .transfer-confirm-heading h2 {
+  font-size: 20px;
+  line-height: 1.4;
+}
+.transfer-confirm .transfer-confirm-heading p {
+  font-size: 12px;
+  color: #8d96ae;
+  margin-top: 5px;
+  line-height: 1.6;
+}
+.transfer-confirm button.transfer-confirm-close {
+  margin-left: auto;
+  align-self: center;
+  padding: 7px;
+  border: 0;
+  color: #8b94b0;
+}
+.transfer-confirm-content {
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 24px 12px;
+}
+.transfer-confirm-summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 14px;
+  background: #f3f0ff;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.transfer-confirm-summary > svg {
+  color: #7860eb;
+  flex-shrink: 0;
+}
+.transfer-confirm-summary strong {
+  font-size: 18px;
+}
+.transfer-confirm .transfer-confirm-summary p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #8791ad;
+  line-height: 1.5;
+}
+.transfer-confirm-targets {
+  max-height: 220px;
+  overflow: auto;
+  min-height: 0;
+  flex-shrink: 0;
+  border: 1px solid #e2e5f0;
+  border-radius: 10px;
+}
+.transfer-confirm-target {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #edf0f6;
+}
+.transfer-confirm-target:last-child {
+  border: 0;
+}
+.transfer-target-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: #f0ecff;
+  border-radius: 11px;
+  color: #7460e5;
+  flex-shrink: 0;
+}
+.transfer-confirm-target > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+.transfer-confirm-target small {
+  color: #8b94ad;
+  font-size: 12px;
+}
+.transfer-confirm-target strong {
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.transfer-target-name {
+  font-size: 12px;
+  color: #959eb5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.transfer-direction-tag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  font-size: 12px;
+  border-radius: 7px;
+  padding: 7px 10px;
+  background: #f2efff;
+  color: #7765c8;
+  flex-shrink: 0;
+}
+.transfer-confirm .transfer-conflict-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.transfer-conflict-options legend {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 3px 0 12px;
+}
+.transfer-confirm label.transfer-conflict-option {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 12px 16px;
+  margin: 0;
+  border: 1px solid #dfe3ef;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #242b49;
+}
+.transfer-conflict-option:hover {
+  background: #faf9ff;
+  border-color: #cbbff6;
+}
+.transfer-confirm label.transfer-conflict-option.is-selected {
+  background: #f5f2ff;
+  border-color: #8571ed;
+}
+.transfer-confirm .transfer-conflict-option input[type='radio'] {
+  appearance: auto;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  accent-color: #6856e9;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.transfer-conflict-option > span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.transfer-conflict-option strong {
+  font-size: 15px;
+}
+.transfer-conflict-option small {
+  color: #8a94ad;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.transfer-confirm-note {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 14px;
+  background: #f7f8fc;
+  border-radius: 9px;
+}
+.transfer-confirm-note > svg {
+  color: #8591ac;
+  flex-shrink: 0;
+}
+.transfer-confirm .transfer-confirm-note p {
+  color: #929cb4;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.transfer-confirm .transfer-confirm-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 10px 24px;
+  border-top: 1px solid #e8ebf3;
+  color: #475474;
+  background: white;
+  flex-shrink: 0;
+}
+.transfer-confirm-footer > span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.transfer-confirm-footer > span svg {
+  color: #7760df;
+}
+.transfer-confirm-footer > div {
+  display: flex;
+  gap: 12px;
+}
+.transfer-confirm .transfer-confirm-unavailable {
+  padding: 0 32px 14px;
+  color: #aa8894;
+  font-size: 12px;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+.transfer-confirm-content::-webkit-scrollbar,
+.transfer-confirm-targets::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.transfer-confirm-content::-webkit-scrollbar-button,
+.transfer-confirm-targets::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.transfer-confirm-content::-webkit-scrollbar-thumb,
+.transfer-confirm-targets::-webkit-scrollbar-thumb {
+  background: #c9c7d7;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+@media (max-height: 760px) {
+  .transfer-confirm .transfer-confirm-heading {
+    padding: 12px 24px;
+  }
+  .transfer-confirm-content {
+    padding: 0 24px 12px;
+    gap: 12px;
+  }
+  .transfer-confirm-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .transfer-confirm-summary {
+    padding: 15px;
+  }
+  .transfer-confirm-target {
+    padding: 14px;
+  }
+  .transfer-confirm label.transfer-conflict-option {
+    padding: 13px 17px;
+  }
+  .transfer-confirm-note {
+    padding: 11px 15px;
+  }
+  .transfer-confirm .transfer-confirm-footer {
+    padding: 10px 24px;
+  }
+}
+@media (max-width: 600px) {
+  .transfer-confirm .transfer-confirm-heading {
+    padding: 12px 20px;
+    gap: 12px;
+  }
+  .transfer-confirm .transfer-confirm-heading h2 {
+    font-size: 21px;
+  }
+  .transfer-confirm-content {
+    padding: 0 20px 12px;
+  }
+  .transfer-confirm-target {
+    flex-wrap: wrap;
+  }
+  .transfer-direction-tag {
+    margin-left: 54px;
+  }
+  .transfer-confirm .transfer-confirm-footer {
+    padding: 10px 20px;
+  }
+  .transfer-confirm-footer > span {
+    display: none;
+  }
+  .transfer-confirm-footer > div {
+    margin-left: auto;
+  }
+}

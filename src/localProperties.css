@@ -1,0 +1,170 @@
+/* 本地属性按设计稿独立限定，覆盖通用 header/modal 的大留白。 */
+.modal.local-properties {
+  width: min(640px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  color: #252b49;
+}
+.local-properties > header {
+  flex-shrink: 0;
+  padding: 22px 24px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: initial;
+  gap: 12px;
+}
+.local-properties header > svg {
+  color: #7160ec;
+}
+.local-properties header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 650;
+}
+.local-properties header button {
+  border: 0;
+  background: transparent;
+  padding: 6px;
+  color: #626982;
+}
+.local-properties-body {
+  padding: 0 24px;
+  min-height: 0;
+  overflow-y: auto;
+}
+.local-property-summary {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 18px 20px;
+  background: #f3f0ff;
+  border-radius: 10px;
+}
+.local-property-icon {
+  flex-shrink: 0;
+  width: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #7160ec;
+}
+.local-property-icon span {
+  max-width: 62px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: #7160ec;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+}
+.local-property-identity {
+  min-width: 0;
+}
+.local-properties .local-property-identity h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.local-properties .local-property-identity p {
+  margin: 0;
+  font-size: 13px;
+  color: #858aa3;
+  overflow-wrap: anywhere;
+}
+.local-property-section {
+  padding: 20px 0;
+}
+.local-property-section + .local-property-section {
+  border-top: 1px solid #ececf5;
+}
+.local-properties .local-property-section h3 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 650;
+}
+.local-properties dl {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 14px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.local-properties dt {
+  color: #858aa3;
+}
+.local-properties dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.local-property-secondary {
+  color: #858aa3;
+  font-size: 13px;
+}
+.local-properties > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+  border-top: 1px solid #ececf5;
+  margin: 0 24px;
+  padding: 14px 0 18px;
+}
+.local-properties footer span {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #858aa3;
+  font-size: 12px;
+}
+.local-properties footer span svg {
+  flex-shrink: 0;
+}
+.local-properties footer button {
+  min-width: 84px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.local-properties .local-property-error {
+  color: #d95168;
+  margin: 18px 0;
+  font-size: 14px;
+}
+.local-properties .local-property-loading {
+  margin: 18px 0;
+  font-size: 14px;
+}
+@media (max-width: 480px) {
+  .local-properties > header {
+    padding: 16px;
+  }
+  .local-properties-body {
+    padding: 0 16px;
+  }
+  .local-property-summary {
+    gap: 12px;
+    padding: 14px;
+  }
+  .local-properties dl {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .local-property-secondary {
+    display: block;
+  }
+  .local-properties > footer {
+    margin: 0 16px;
+  }
+}

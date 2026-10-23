@@ -1,0 +1,195 @@
+.archive-pack-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+.archive-dialog.archive-pack-dialog:not(.expanded):has(.pack-progress) {
+  height: min(960px, calc(100dvh - 48px));
+}
+.archive-pack-page > .archive-workspace {
+  flex: 1;
+  min-height: 250px;
+}
+.pack-progress {
+  margin: 18px 24px 8px;
+  padding: 22px 24px 16px;
+  border: 1px solid #ececf5;
+  border-radius: 12px;
+  background: #fff;
+  color: #252b49;
+  flex-shrink: 0;
+}
+.pack-progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+.pack-progress-heading h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+}
+.pack-progress-heading svg {
+  color: #6c57ee;
+  width: 28px;
+  height: 28px;
+}
+.pack-stages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin: 24px 0;
+  padding: 0;
+}
+.pack-stages li {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  color: #9298af;
+  text-align: center;
+  font-size: 13px;
+}
+.pack-stages li svg {
+  width: 28px;
+  height: 28px;
+}
+.pack-stages li strong {
+  font-size: 15px;
+}
+.pack-stages li.complete {
+  color: #3ba77a;
+}
+.pack-stages li.active {
+  color: #6c57ee;
+}
+.pack-progress-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.pack-progress-label em {
+  color: #9298af;
+  font-style: normal;
+  margin-left: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.pack-progress progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 9px;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 12px;
+  accent-color: #6c57ee;
+}
+.pack-progress progress::-webkit-progress-bar {
+  background: #eeeaff;
+  border-radius: 6px;
+}
+.pack-progress progress::-webkit-progress-value {
+  background: #7d69f0;
+  border-radius: 6px;
+  transition: width 100ms linear;
+}
+.pack-progress progress:indeterminate::-webkit-progress-bar {
+  background: #eeeaff;
+}
+.pack-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 22px 0;
+}
+.pack-metrics > div {
+  padding: 0 20px;
+  border-left: 1px solid #ececf5;
+}
+.pack-metrics > div:first-child {
+  padding-left: 0;
+  border: 0;
+}
+.pack-metrics dt {
+  font-size: 13px;
+  color: #9298af;
+  margin-bottom: 7px;
+}
+.pack-metrics dd {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.pack-metrics .pack-speed {
+  color: #6c57ee;
+}
+.pack-current {
+  display: flex;
+  gap: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+.pack-current span {
+  flex-shrink: 0;
+  color: #9298af;
+}
+.pack-summary {
+  margin: 0;
+  font-size: 12px;
+  color: #9298af;
+}
+.pack-spinning {
+  animation: pack-spin 1s linear infinite;
+}
+@keyframes pack-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pack-spinning {
+    animation: none;
+  }
+  .pack-progress progress::-webkit-progress-value {
+    transition: none;
+  }
+}
+@media (max-width: 720px) {
+  .pack-progress {
+    margin: 12px;
+    padding: 16px;
+  }
+  .pack-progress-heading {
+    font-size: 15px;
+  }
+  .pack-progress-heading h3 {
+    font-size: 17px;
+  }
+  .pack-stages li {
+    font-size: 11px;
+  }
+  .pack-stages li strong {
+    font-size: 12px;
+  }
+  .pack-metrics dd {
+    font-size: 17px;
+  }
+  .pack-progress-label em {
+    display: block;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}

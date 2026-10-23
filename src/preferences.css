@@ -1,0 +1,495 @@
+/* 独立设置作用域；内容滚动，头部和关闭操作始终可见。 */
+.modal.preferences-dialog {
+  width: min(940px, calc(100vw - 40px));
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  color: #242b49;
+  outline: none;
+}
+.modal.preferences-dialog h2,
+.modal.preferences-dialog h3,
+.modal.preferences-dialog p {
+  margin: 0;
+}
+.preferences-dialog button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: white;
+  color: #4a5470;
+  border: 1px solid #dee3ef;
+  border-radius: 8px;
+  padding: 9px 15px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.preferences-dialog button:hover:not(:disabled) {
+  background: #f7f5ff;
+  border-color: #d4c9f9;
+}
+.preferences-dialog button.primary {
+  background: #6856e9;
+  border-color: #6856e9;
+  color: white;
+}
+.preferences-dialog button.primary:hover:not(:disabled) {
+  background: #5b49d5;
+  border-color: #5b49d5;
+}
+.preferences-dialog button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.preferences-dialog button:focus-visible,
+.preferences-dialog input:focus-visible,
+.preferences-dialog select:focus-visible {
+  outline: 2px solid #8975ed;
+  outline-offset: 3px;
+}
+.preferences-dialog .preferences-heading {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border-bottom: 1px solid #e7ebf4;
+  flex-shrink: 0;
+}
+.preferences-heading-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: #eee9ff;
+  color: #775deb;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.preferences-dialog .preferences-heading h2 {
+  font-size: 20px;
+}
+.preferences-dialog .preferences-heading p {
+  font-size: 12px;
+  color: #8a95ae;
+  margin-top: 5px;
+}
+.preferences-dialog button.preferences-close {
+  margin-left: auto;
+  align-self: center;
+  padding: 7px;
+  border: 0;
+  color: #8d96ad;
+}
+.preferences-body {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  min-height: 0;
+  flex: 1;
+}
+.preferences-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 12px;
+  border-right: 1px solid #e7ebf4;
+  background: #f7f8fc;
+}
+.preferences-dialog .preferences-nav button {
+  justify-content: flex-start;
+  gap: 14px;
+  padding: 10px 16px;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+}
+.preferences-dialog .preferences-nav button[aria-current='location'] {
+  color: #7053dc;
+  background: #ebe5ff;
+  font-weight: 600;
+}
+.preferences-dialog .preferences-nav button:hover:not(:disabled) {
+  background: #f0ebff;
+}
+.preferences-content {
+  position: relative;
+  overflow: auto;
+  padding: 16px 24px;
+  min-width: 0;
+}
+.preferences-section + .preferences-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e8ebf3;
+}
+.preferences-dialog .preferences-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.preferences-section h3 > svg {
+  color: #775deb;
+  flex-shrink: 0;
+}
+.preferences-dialog label.preferences-display-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px 20px;
+  margin: 0;
+  border: 1px solid #e1e6f1;
+  border-radius: 9px;
+  cursor: pointer;
+}
+.preferences-display-row > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.preferences-dialog strong {
+  font-size: 14px;
+  color: #303954;
+}
+.preferences-display-row small,
+.preferences-setting-row small {
+  display: block;
+  font-size: 12px;
+  color: #8592ad;
+  line-height: 1.5;
+}
+.preferences-dialog .preferences-display-row input {
+  position: absolute;
+  right: 20px;
+  width: 42px;
+  height: 24px;
+  margin: 0;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+.preferences-switch {
+  width: 42px;
+  height: 24px;
+  background: #d2d8e7;
+  border-radius: 14px;
+  margin-left: auto;
+  position: relative;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+.preferences-switch::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  background: white;
+  box-shadow: 0 1px 3px #29395720;
+  transition: transform 0.15s ease;
+}
+.preferences-display-row input:checked + .preferences-switch {
+  background: #7860e7;
+}
+.preferences-display-row input:checked + .preferences-switch::after {
+  transform: translateX(18px);
+}
+.preferences-display-row input:focus-visible + .preferences-switch {
+  outline: 2px solid #8975ed;
+  outline-offset: 3px;
+}
+.preferences-display-row input:disabled + .preferences-switch {
+  opacity: 0.5;
+}
+.preferences-transfer-fields {
+  border: 1px solid #e1e6f1;
+  border-radius: 9px;
+  padding: 0 20px;
+}
+.preferences-dialog label.preferences-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  margin: 0;
+}
+.preferences-setting-row + .preferences-setting-row {
+  border-top: 1px solid #e7ebf4;
+}
+.preferences-setting-row strong {
+  display: block;
+  margin-bottom: 5px;
+}
+.preferences-dialog .preferences-setting-row select {
+  width: 150px;
+  margin: 0;
+  padding: 9px 12px;
+  font-size: 13px;
+  background: white;
+  flex-shrink: 0;
+}
+.preferences-rate-input {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  border: 1px solid #e1e5ef;
+  border-radius: 7px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.preferences-dialog .preferences-rate-input input {
+  min-width: 0;
+  width: 100%;
+  padding: 9px 10px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: white;
+  font-size: 13px;
+}
+.preferences-rate-input > span {
+  padding: 10px 9px;
+  background: #f4f5fa;
+  color: #8590aa;
+  font-size: 12px;
+}
+.preferences-transfer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.preferences-dialog .preferences-transfer-actions p {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: #8a96ad;
+  line-height: 1.7;
+}
+.preferences-transfer-actions p svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.preferences-transfer-actions button {
+  white-space: nowrap;
+}
+.preferences-count {
+  border-radius: 10px;
+  padding: 2px 8px;
+  color: #8a70e6;
+  background: #efebff;
+  font-size: 12px;
+  font-weight: 500;
+}
+.preferences-hosts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.preferences-host {
+  border: 1px solid #e1e6f1;
+  border-radius: 9px;
+  padding: 15px 18px;
+}
+.preferences-host-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+.preferences-host-heading > svg {
+  color: #37af76;
+  flex-shrink: 0;
+}
+.preferences-host-heading strong {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.preferences-dialog .preferences-remove {
+  padding: 6px 9px;
+  background: #fff4f5;
+  color: #d17d86;
+  border: 0;
+  font-size: 11px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.preferences-dialog .preferences-remove:hover:not(:disabled) {
+  background: #ffe9ed;
+  color: #c56672;
+}
+.preferences-host > small {
+  display: block;
+  font-size: 11px;
+  color: #8995af;
+  margin-bottom: 6px;
+}
+.preferences-host code {
+  display: block;
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 9px 11px;
+  background: #f4f5f9;
+  color: #6b7996;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+.preferences-no-hosts {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px dashed #e0e5f1;
+  border-radius: 9px;
+  padding: 24px 12px;
+  color: #a2a7bb;
+  text-align: center;
+}
+.preferences-dialog .preferences-no-hosts p {
+  color: #939eb4;
+  font-size: 12px;
+}
+.preferences-inline-status {
+  display: block;
+  margin-top: 8px;
+  color: #8a96ae;
+  font-size: 11px;
+}
+.preferences-dialog .preferences-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 24px;
+  background: white;
+  border-top: 1px solid #e7ebf4;
+  color: #8591a9;
+  flex-shrink: 0;
+}
+.preferences-footer > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.preferences-footer strong {
+  font-weight: 500;
+}
+.preferences-footer small {
+  font-size: 11px;
+  color: #9aa4b7;
+}
+.preferences-footer > button {
+  margin-left: auto;
+  min-width: 85px;
+}
+.preferences-content::-webkit-scrollbar {
+  width: 7px;
+}
+.preferences-content::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.preferences-content::-webkit-scrollbar-thumb {
+  background: #c9cbd8;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+@media (max-height: 760px) {
+  .preferences-dialog .preferences-heading {
+    padding: 12px 24px;
+  }
+  .preferences-content {
+    padding: 12px 24px;
+  }
+  .preferences-section + .preferences-section {
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+  .preferences-dialog .preferences-footer {
+    padding: 10px 24px;
+  }
+}
+@media (max-width: 760px) {
+  .preferences-body {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+  .preferences-nav {
+    padding: 14px 8px;
+  }
+  .preferences-dialog .preferences-nav button {
+    padding: 12px 8px;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .preferences-content {
+    padding: 18px;
+  }
+  .preferences-transfer-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .preferences-dialog label.preferences-setting-row {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 540px) {
+  .preferences-body {
+    display: flex;
+    flex-direction: column;
+  }
+  .preferences-nav {
+    flex-direction: row;
+    border-right: 0;
+    border-bottom: 1px solid #e7ebf4;
+    padding: 8px;
+    flex-shrink: 0;
+  }
+  .preferences-content {
+    min-height: 0;
+  }
+  .preferences-dialog .preferences-heading {
+    padding: 18px;
+    gap: 12px;
+  }
+  .preferences-dialog .preferences-heading h2 {
+    font-size: 21px;
+  }
+  .preferences-footer > svg {
+    display: none;
+  }
+  .preferences-dialog .preferences-footer {
+    padding: 14px 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .preferences-switch::after {
+    transition: none;
+  }
+}
+
+.preferences-load-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: #fff4f5;
+  color: #bc7b88;
+  font-size: 12px;
+}

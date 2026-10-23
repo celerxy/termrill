@@ -1,0 +1,314 @@
+/* 独立作用域避免普通弹窗的标题、标签和按钮样式污染删除确认。 */
+.modal.delete-confirmation {
+  width: 640px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #252b49;
+}
+.delete-confirmation .delete-confirmation-header {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  flex-shrink: 0;
+}
+.delete-title-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: #fff0f0;
+  color: #ed5964;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.delete-confirmation .delete-confirmation-header h2 {
+  font-size: 20px;
+  margin: 0 0 5px;
+}
+.delete-confirmation .delete-confirmation-header p {
+  font-size: 12px;
+  color: #8a92aa;
+  margin: 0;
+}
+.delete-confirmation .delete-close {
+  border: 0;
+  background: transparent;
+  color: #8a92aa;
+  padding: 7px;
+  margin-left: auto;
+  align-self: center;
+}
+.delete-confirmation-body {
+  padding: 0 24px 12px;
+  overflow-y: auto;
+  min-height: 0;
+}
+.delete-warning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 13px 15px;
+  color: #d84956;
+  background: #fff1f2;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.delete-warning svg {
+  flex-shrink: 0;
+}
+.delete-items {
+  max-height: 260px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+}
+.delete-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 12px 14px;
+  border: 1px solid #e2e6ef;
+  border-radius: 10px;
+  background: #f8f9fc;
+}
+.delete-item-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid #e1e4ef;
+  background: #f2efff;
+  color: #8b7bdd;
+  display: grid;
+  place-items: center;
+}
+.delete-item-icon.is-folder {
+  color: #e9ae33;
+  background: #fff9ed;
+  border-color: #f5dfad;
+}
+.delete-item-info {
+  flex: 1;
+  min-width: 0;
+}
+.delete-item-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.delete-item-heading strong {
+  font-size: 14px;
+  line-height: 1.5;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.delete-item-heading > span {
+  font-size: 10px;
+  white-space: nowrap;
+  background: #eceef4;
+  color: #737d98;
+  border-radius: 5px;
+  padding: 4px 7px;
+}
+.delete-item-info small {
+  font-size: 11px;
+  color: #8a92aa;
+}
+.delete-item-path {
+  font-size: 12px;
+  color: #717d99;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+.delete-confirmation .delete-recursive-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 12px 14px;
+  margin: 12px 0 0;
+  border: 1px solid #e2e6ef;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.delete-confirmation .delete-recursive-option input {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  margin: 2px 0 0;
+  accent-color: #6856e9;
+}
+.delete-recursive-option strong {
+  display: block;
+  color: #313a58;
+  font-size: 13px;
+  font-weight: 600;
+}
+.delete-recursive-option small {
+  display: block;
+  margin-top: 7px;
+  color: #8a92aa;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.delete-confirmation p.delete-selection-count {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: #8a92aa;
+}
+.delete-error {
+  color: #d84956;
+  background: #fff1f2;
+  padding: 12px;
+  margin-top: 14px;
+  font-size: 12px;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+.delete-error small {
+  display: block;
+  margin-top: 6px;
+}
+.delete-confirmation .delete-confirmation-footer {
+  background: white;
+  border-top: 1px solid #edf0f6;
+  padding: 10px 24px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.delete-confirmation-footer > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #8a92aa;
+}
+.delete-confirmation-footer > div {
+  display: flex;
+  gap: 10px;
+}
+.delete-confirmation .delete-confirmation-footer button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 19px;
+  font-size: 12px;
+  border: 1px solid #dce1ed;
+  background: white;
+  color: #313a58;
+  border-radius: 8px;
+}
+.delete-confirmation .delete-confirmation-footer .delete-danger {
+  color: white;
+  background: #ed5964;
+  border-color: #ed5964;
+}
+.delete-confirmation .delete-danger:hover:not(:disabled) {
+  background: #dc4856;
+  border-color: #dc4856;
+  color: white;
+}
+.delete-confirmation button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.delete-confirmation button:focus-visible,
+.delete-confirmation input:focus-visible {
+  outline: 2px solid #a69bea;
+  outline-offset: 3px;
+}
+.delete-confirmation-body::-webkit-scrollbar,
+.delete-items::-webkit-scrollbar {
+  width: 6px;
+}
+.delete-confirmation-body::-webkit-scrollbar-thumb,
+.delete-items::-webkit-scrollbar-thumb {
+  background: #cbd0df;
+  border-radius: 10px;
+}
+.delete-confirmation-body::-webkit-scrollbar-button,
+.delete-items::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.delete-spinner {
+  animation: delete-spin 1s linear infinite;
+}
+.delete-operation-time {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f7f8fc;
+  color: #818aa9;
+  font-size: 13px;
+}
+.delete-operation-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.delete-operation-heading > span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.delete-operation-heading > svg {
+  flex-shrink: 0;
+}
+.delete-current-stage {
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.delete-stage-history {
+  margin-top: 8px;
+  font-size: 11px;
+}
+.delete-stage-history summary {
+  cursor: pointer;
+}
+.delete-stage-history p {
+  margin: 6px 0 0;
+  overflow-wrap: anywhere;
+}
+.delete-operation-time strong {
+  margin-left: auto;
+  color: #313a58;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@keyframes delete-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .delete-spinner {
+    animation: none;
+  }
+}
+@media (max-width: 540px) {
+  .delete-confirmation .delete-confirmation-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .delete-confirmation-footer > div {
+    justify-content: flex-end;
+  }
+  .delete-item {
+    padding: 14px;
+  }
+}

@@ -1,0 +1,328 @@
+/* 浅色终端：单排左侧标签、右侧工具，按需浮动搜索；覆盖旧通用终端按钮的 auto 外边距。 */
+.terminal-panel.terminal-workspace {
+  border-radius: 10px;
+  border: 1px solid #e4e6f1;
+  background: #ffffff;
+}
+.terminal-workspace .terminal-heading {
+  height: 44px;
+  padding: 0 14px;
+  gap: 8px;
+  background: #f7f8fc;
+  border-bottom: 1px solid #e6e8f2;
+}
+.terminal-workspace .terminal-heading button {
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  color: #727b94;
+  padding: 0;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.terminal-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  margin-right: 12px;
+  color: #30374e;
+  font-size: 13px;
+}
+.terminal-brand > svg {
+  color: #7563df;
+}
+.terminal-tabs {
+  display: flex;
+  align-self: stretch;
+  gap: 3px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.terminal-tabs::-webkit-scrollbar {
+  display: none;
+}
+.terminal-tab {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 6px 0 12px;
+  border-bottom: 2px solid transparent;
+  margin-top: 5px;
+  border-radius: 6px 6px 0 0;
+}
+.terminal-tab.is-active {
+  border-bottom-color: #8270ec;
+  background: #eeebff;
+}
+.terminal-workspace .terminal-tab > [role='tab'] {
+  height: 35px;
+  gap: 8px;
+  color: #69728a;
+  font-size: 12px;
+  padding: 0 5px 0 0;
+  white-space: nowrap;
+}
+.terminal-workspace .terminal-tab.is-active > [role='tab'] {
+  color: #5846c7;
+}
+.terminal-workspace .terminal-tab-close {
+  width: 18px;
+  height: 22px;
+  opacity: 0;
+}
+.terminal-workspace .terminal-tab:hover .terminal-tab-close,
+.terminal-workspace .terminal-tab:focus-within .terminal-tab-close {
+  opacity: 1;
+}
+.terminal-workspace .terminal-heading .terminal-new {
+  width: 28px;
+  height: 30px;
+}
+.terminal-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding-left: 12px;
+  flex-shrink: 0;
+}
+.terminal-workspace .terminal-tools button {
+  width: 29px;
+  height: 30px;
+}
+.terminal-workspace .terminal-heading button:hover:not(:disabled),
+.terminal-workspace .terminal-heading button[aria-pressed='true'] {
+  background: #eeebff;
+  color: #5846c7;
+}
+.terminal-workspace button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.terminal-state-dot {
+  flex-shrink: 0;
+  color: #788197;
+}
+.terminal-state-dot.connected {
+  color: #299a70;
+}
+.terminal-state-dot.error {
+  color: #bd4259;
+}
+.terminal-workspace-body {
+  min-height: 130px;
+  position: relative;
+  background: #ffffff;
+}
+.terminal-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.terminal-grid.split {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.terminal-grid[hidden],
+.terminal-cell[hidden],
+.terminal-log-cell[hidden] {
+  display: none;
+}
+.terminal-cell {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.terminal-grid.split .terminal-cell + .terminal-cell {
+  border-left: 1px solid #e6e8f2;
+}
+.terminal-grid.split .terminal-cell.is-active {
+  box-shadow: inset 0 1px #8270ec;
+}
+.terminal-session {
+  height: 100%;
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+.terminal-session .terminal-host {
+  inset: 16px 18px 12px;
+}
+.terminal-session .xterm {
+  height: 100%;
+  padding: 0;
+}
+.terminal-session .xterm .xterm-viewport {
+  overflow: hidden;
+  background-color: #ffffff;
+}
+.terminal-session .xterm-scrollable-element > .scrollbar.horizontal {
+  display: none !important;
+}
+.terminal-session .xterm-scrollable-element > .scrollbar > .slider {
+  width: 5px !important;
+  left: auto !important;
+  right: 2px;
+  border: 0;
+  border-radius: 5px;
+}
+.terminal-session .xterm-viewport::-webkit-scrollbar {
+  width: 5px;
+  height: 0;
+}
+.terminal-search {
+  position: absolute;
+  top: 8px;
+  right: 18px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: min(350px, calc(100% - 36px));
+  padding: 6px 8px;
+  border: 1px solid #d8dcec;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px #36335b12;
+  color: #6a738a;
+}
+.terminal-search input {
+  flex: 1;
+  min-width: 30px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #30374e;
+  font:
+    12px 'Segoe UI',
+    sans-serif;
+  padding: 2px 0;
+}
+.terminal-search input::placeholder {
+  color: #7a839b;
+}
+.terminal-search span {
+  color: #69728a;
+  font-size: 10px;
+  white-space: nowrap;
+  max-width: 80px;
+  overflow: hidden;
+}
+.terminal-search button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 23px;
+  border: 0;
+  padding: 0;
+  color: #69728a;
+  border-radius: 3px;
+  background: transparent;
+  flex-shrink: 0;
+}
+.terminal-search button:hover:not(:disabled) {
+  background: #eeebff;
+}
+.terminal-status {
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+  border-top: 1px solid #e6e8f2;
+  color: #707a93;
+  background: #f7f8fc;
+  font-size: 11px;
+}
+.terminal-status > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.log-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 8px;
+  color: #56617b;
+  font-size: 12px;
+}
+.log-controls input {
+  flex: 1;
+  min-width: 50px;
+}
+.log-controls input,
+.log-controls select {
+  color: #30374e;
+  background: #f7f8fc;
+  border: 1px solid #dce0ed;
+  border-radius: 4px;
+  font: inherit;
+  padding: 4px 6px;
+}
+.log-controls button {
+  color: #30374e;
+  font-size: 11px;
+  padding: 4px;
+  white-space: nowrap;
+}
+.terminal-log-cell,
+.log-viewer {
+  height: 100%;
+  min-width: 0;
+}
+.log-viewer {
+  display: flex;
+  flex-direction: column;
+}
+.log-controls small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.log-viewer pre {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  margin: 0;
+  padding: 8px 12px;
+  color: #30374e;
+  font:
+    12px/1.5 Consolas,
+    monospace;
+  user-select: text;
+  white-space: pre;
+}
+.terminal-workspace button:focus-visible,
+.terminal-workspace pre:focus-visible {
+  outline: 2px solid #8270ec;
+  outline-offset: -2px;
+}
+
+@media (max-width: 760px) {
+  .terminal-brand strong {
+    display: none;
+  }
+  .terminal-brand {
+    margin-right: 2px;
+  }
+  .terminal-tools {
+    gap: 2px;
+    padding-left: 4px;
+  }
+  .terminal-workspace .terminal-heading {
+    padding: 0 8px;
+  }
+  .terminal-grid.split {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(100px, 1fr));
+    overflow: auto;
+  }
+  .log-controls {
+    flex-wrap: wrap;
+  }
+}

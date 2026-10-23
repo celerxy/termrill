@@ -1,0 +1,53 @@
+.modal.command-palette {
+  width: 520px;
+  max-width: calc(100vw - 32px);
+  padding: 0;
+  overflow: hidden;
+  align-self: flex-start;
+  margin-top: min(14vh, 110px);
+}
+.command-palette-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-bottom: 1px solid #e9ebf3;
+  color: #8c93a6;
+}
+.command-palette-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 5px;
+}
+.command-palette-list {
+  padding: 6px;
+  max-height: min(420px, 60vh);
+  overflow: auto;
+}
+.command-palette-list > button {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 11px 12px;
+  font-size: 12px;
+}
+.command-palette-list > button[aria-selected='true'] {
+  background: #eeebff;
+  color: #6553e8;
+}
+.command-palette-list kbd {
+  font: inherit;
+  font-size: 10px;
+  color: #8c93a6;
+}
+.command-palette-list p,
+.command-palette footer {
+  padding: 10px 15px;
+  margin: 0;
+  color: #8c93a6;
+  font-size: 11px;
+}
+.command-palette footer {
+  border-top: 1px solid #e9ebf3;
+}

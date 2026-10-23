@@ -1,0 +1,362 @@
+/* 独立限定弹窗样式，矩阵与所有者操作保持各自的提交语义。 */
+.modal.permissions-design {
+  width: 760px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  color: #252b49;
+}
+.permissions-design .permissions-header {
+  padding: 12px 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: white;
+  flex-shrink: 0;
+}
+.permissions-title-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f0ecff;
+  color: #6856e9;
+  flex-shrink: 0;
+}
+.permissions-design .permissions-header h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+}
+.permissions-design .permissions-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #8a92aa;
+}
+.permissions-design .permissions-header button {
+  margin-left: auto;
+  align-self: center;
+  padding: 7px;
+  background: transparent;
+  border: 0;
+  color: #8a92aa;
+}
+.permissions-body {
+  padding: 0 24px 12px;
+  overflow-y: auto;
+  min-height: 0;
+}
+.permissions-file-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border: 1px solid #e2e6ef;
+  border-radius: 9px;
+  background: #f8f9fc;
+  margin-bottom: 12px;
+}
+.permissions-file-icon {
+  color: #8b7bdd;
+  flex-shrink: 0;
+}
+.permissions-file-icon.is-folder {
+  color: #e8ae33;
+}
+.permissions-file-card > div:last-child {
+  min-width: 0;
+}
+.permissions-file-card strong {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.permissions-kind,
+.permissions-mode-badge {
+  margin-left: 12px;
+  color: #6856e9;
+  background: #f0ecff;
+  padding: 3px 7px;
+  border-radius: 5px;
+  font-size: 11px;
+  display: inline-block;
+}
+.permissions-design .permissions-file-card p {
+  margin: 7px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  color: #8a92aa;
+}
+.permissions-metadata {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  padding: 10px 14px;
+  margin: 0 0 12px;
+  border: 1px solid #e2e6ef;
+  border-radius: 9px;
+}
+.permissions-metadata dt {
+  font-size: 11px;
+  color: #8a92aa;
+  margin-bottom: 6px;
+}
+.permissions-metadata dd {
+  margin: 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.permissions-design .permissions-owner-card,
+.permissions-design .permissions-mode-card {
+  border: 1px solid #e2e6ef;
+  border-radius: 9px;
+  margin: 0 0 12px;
+  padding: 12px 14px 10px;
+  min-width: 0;
+}
+.permissions-design .permissions-section-title {
+  float: left;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.permissions-section-title svg {
+  color: #6856e9;
+  flex-shrink: 0;
+}
+.permissions-section-title span {
+  margin-left: auto;
+  font-weight: normal;
+  color: #8a92aa;
+  font-size: 10px;
+}
+.permissions-owner-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+  clear: both;
+}
+.permissions-design .permissions-owner-row label {
+  display: block;
+  margin: 0;
+  font-size: 11px;
+  color: #737d98;
+}
+.permissions-design .permissions-owner-row input {
+  width: 100%;
+  margin: 6px 0 0;
+  font-size: 12px;
+  padding: 9px 11px;
+  background: white;
+  border: 1px solid #dce1ed;
+  border-radius: 6px;
+}
+.permissions-design .permissions-owner-row button {
+  padding: 10px 12px;
+  font-size: 11px;
+  border: 1px solid #dce1ed;
+  border-radius: 6px;
+  background: white;
+}
+.permissions-design fieldset p {
+  margin: 10px 0 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: #8a92aa;
+  clear: both;
+}
+.permissions-design .permissions-grid table {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
+  border-collapse: separate;
+  border: 1px solid #e2e6ef;
+  border-radius: 7px;
+  overflow: hidden;
+  clear: both;
+  margin: 0;
+}
+.permissions-design .permissions-grid th,
+.permissions-design .permissions-grid td {
+  padding: 9px 10px;
+  text-align: center;
+  font-size: 12px;
+  border-bottom: 1px solid #edf0f6;
+}
+.permissions-design .permissions-grid th:first-child {
+  text-align: left;
+}
+.permissions-design .permissions-grid th {
+  font-weight: 500;
+  color: #56617f;
+}
+.permissions-design .permissions-grid thead,
+.permissions-design .permissions-grid tbody tr:nth-child(even) {
+  background: #f8f9fc;
+}
+.permissions-design .permissions-grid tr:last-child td,
+.permissions-design .permissions-grid tbody tr:last-child th {
+  border-bottom: 0;
+}
+.permissions-design .permissions-grid input[type='checkbox'] {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: #6856e9;
+  vertical-align: middle;
+}
+.permissions-mode-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.permissions-design .permissions-mode-row label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  font-size: 11px;
+  color: #737d98;
+}
+.permissions-design .permissions-mode-row input {
+  width: 85px;
+  margin: 0;
+  padding: 9px 11px;
+  font-size: 12px;
+  border-radius: 6px;
+  background: white;
+}
+.permissions-preview {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 11px;
+  color: #8a92aa;
+}
+.permissions-preview code {
+  color: #6856e9;
+  background: #f0ecff;
+  padding: 5px 9px;
+  border-radius: 5px;
+}
+.permissions-design .permissions-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 24px;
+  margin: 0;
+  border-top: 1px solid #edf0f6;
+  background: white;
+  flex-shrink: 0;
+}
+.permissions-footer > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #8a92aa;
+}
+.permissions-footer > div {
+  display: flex;
+  gap: 10px;
+}
+.permissions-design .permissions-footer button {
+  padding: 10px 20px;
+  font-size: 12px;
+  border-radius: 7px;
+  border: 1px solid #dce1ed;
+  background: white;
+}
+.permissions-design .permissions-footer button.primary {
+  color: white;
+  background: #6856e9;
+  border-color: #6856e9;
+}
+.permissions-design button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.permissions-design button.primary:hover:not(:disabled) {
+  color: white;
+  background: #5b49d7;
+}
+.permissions-design .permissions-processing {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 12px 0;
+}
+.permissions-processing svg {
+  animation: permissions-spin 1s linear infinite;
+}
+.permissions-body::-webkit-scrollbar {
+  width: 6px;
+}
+.permissions-body::-webkit-scrollbar-thumb {
+  background: #cbd0df;
+  border-radius: 10px;
+}
+.permissions-body::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+@keyframes permissions-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .permissions-processing svg {
+    animation: none;
+  }
+}
+@media (max-width: 600px) {
+  .permissions-owner-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .permissions-owner-row button {
+    grid-column: 1 / -1;
+  }
+  .permissions-metadata {
+    grid-template-columns: 1fr;
+  }
+  .permissions-design .permissions-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .permissions-footer > div {
+    justify-content: flex-end;
+  }
+}
+/* 提高作用域优先级，覆盖共用旧权限表单规则而不影响批量权限弹窗。 */
+.modal.permissions-design .permissions-owner-row label {
+  display: block;
+  margin: 0;
+}
+.modal.permissions-design .permissions-owner-row input {
+  width: 100%;
+  margin-top: 6px;
+}
+.modal.permissions-design .permissions-grid th:first-child {
+  width: 29%;
+}
+.modal.permissions-design .permissions-grid td {
+  width: auto;
+}
+.modal.permissions-design .permissions-grid th:not(:first-child) {
+  width: 23.6667%;
+}

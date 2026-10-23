@@ -1,0 +1,9 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+src-tauri/icons/
+tests/.venv/
+tests/.runtime*/
+package-lock.json
+src-tauri/Cargo.lock

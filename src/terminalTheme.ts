@@ -1,0 +1,31 @@
+/** 与 TermRill 浅色界面配套的 ANSI 调色板，避免服务端常见亮色文字在白底上消失。 */
+import type { ITheme } from '@xterm/xterm';
+
+export const terminalTheme: ITheme = {
+  background: '#ffffff',
+  foreground: '#30374e',
+  cursor: '#6856e9',
+  cursorAccent: '#ffffff',
+  selectionBackground: '#e4dfff',
+  selectionForeground: '#30374e',
+  selectionInactiveBackground: '#edeaf8',
+  black: '#30374e',
+  red: '#b42338',
+  green: '#217143',
+  yellow: '#946600',
+  blue: '#365bb8',
+  magenta: '#8355b6',
+  cyan: '#147782',
+  white: '#596278',
+  brightBlack: '#6f788f',
+  brightRed: '#cc334d',
+  brightGreen: '#25834e',
+  brightYellow: '#a67000',
+  brightBlue: '#466bd3',
+  brightMagenta: '#9765c6',
+  brightCyan: '#1b8990',
+  brightWhite: '#334155',
+  scrollbarSliderBackground: '#a6adc766',
+  scrollbarSliderHoverBackground: '#929bb788',
+  scrollbarSliderActiveBackground: '#7d87a6aa',
+};

@@ -1,0 +1,1248 @@
+/* 压缩包工作区：固定标题和操作栏，列表与设置独立滚动。 */
+/* 同时覆盖整体内容、来源列表和设置容器，避免回退到系统粗轨道。 */
+.archive-dialog,
+.archive-dialog * {
+  scrollbar-width: thin;
+  scrollbar-color: #c8c4dc transparent;
+}
+.archive-dialog::-webkit-scrollbar,
+.archive-dialog *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.archive-dialog::-webkit-scrollbar-track,
+.archive-dialog *::-webkit-scrollbar-track {
+  background: transparent;
+}
+.archive-dialog::-webkit-scrollbar-thumb,
+.archive-dialog *::-webkit-scrollbar-thumb {
+  background: #c8c4dc;
+  border-radius: 999px;
+}
+.archive-dialog::-webkit-scrollbar-thumb:hover,
+.archive-dialog *::-webkit-scrollbar-thumb:hover {
+  background: #a69bcf;
+}
+.archive-dialog::-webkit-scrollbar-button,
+.archive-dialog *::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.archive-dialog::-webkit-scrollbar-corner,
+.archive-dialog *::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* WebView2 的标准 thin 会覆盖伪元素样式并保留系统箭头；
+   支持 WebKit 滚动条时统一交给上面的规则绘制。 */
+@supports selector(::-webkit-scrollbar) {
+  .archive-dialog,
+  .archive-dialog * {
+    scrollbar-width: auto !important;
+    scrollbar-color: auto !important;
+  }
+}
+.archive-dialog {
+  width: min(1320px, calc(100vw - 48px));
+  height: min(890px, calc(100dvh - 64px));
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px #25294330;
+  color: #252b49;
+  outline: none;
+}
+.archive-dialog.expanded {
+  width: calc(100vw - 24px);
+  height: calc(100dvh - 24px);
+}
+.archive-dialog button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #e6e5f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #353954;
+  padding: 9px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.archive-dialog button:hover:not(:disabled) {
+  background: #f5f3ff;
+  color: #6553e8;
+}
+.archive-dialog button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.archive-dialog button.primary {
+  background: #6c57ee;
+  color: white;
+  border-color: #6c57ee;
+}
+.archive-dialog button.primary:hover:not(:disabled) {
+  background: #5c48db;
+  color: white;
+}
+.archive-dialog button.danger {
+  color: #c64f64;
+}
+.archive-dialog :is(button, input, select, summary):focus-visible {
+  outline: 2px solid #8c7bf1;
+  outline-offset: 2px;
+}
+.archive-heading {
+  flex-wrap: nowrap;
+  padding: 20px 26px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #ececf5;
+}
+.archive-heading > svg {
+  color: #7160ec;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+.archive-heading > div {
+  flex: 1;
+  min-width: 0;
+}
+.archive-title-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.archive-heading h2 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-format {
+  background: #eeeaff;
+  color: #7560ef;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 7px;
+}
+.archive-heading p {
+  display: block;
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #9298af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-heading p span {
+  border-left: 1px solid #d8d9e6;
+  margin-left: 16px;
+  padding-left: 16px;
+}
+.archive-heading > button {
+  border: 0;
+  padding: 7px;
+  background: transparent;
+  flex-shrink: 0;
+}
+.archive-body {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.archive-workspace {
+  min-height: 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+}
+.archive-content {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.archive-toolbar {
+  display: flex;
+  padding: 12px 22px;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid #ececf5;
+  flex-shrink: 0;
+}
+.archive-toolbar > button {
+  border: 0;
+  padding: 8px;
+  color: #484780;
+  white-space: nowrap;
+}
+.archive-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 100px;
+  margin-right: 16px;
+  border: 1px solid #e5e5f0;
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #9298af;
+}
+.archive-search input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+  color: #353954;
+  min-width: 0;
+}
+.archive-search:focus-within {
+  border-color: #8c7bf1;
+  box-shadow: 0 0 0 3px #8c7bf114;
+  color: #7560ef;
+}
+/* 焦点统一显示在搜索容器，避免通用 input 规则形成第二层方框。 */
+.archive-dialog .archive-search input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.archive-search input::placeholder {
+  color: #9298af;
+}
+.archive-more {
+  position: relative;
+}
+.archive-more summary {
+  display: flex;
+  cursor: pointer;
+  padding: 8px;
+  list-style: none;
+  border-radius: 6px;
+}
+.archive-more summary::-webkit-details-marker,
+.archive-password summary::-webkit-details-marker {
+  display: none;
+}
+.archive-more > div {
+  position: absolute;
+  right: 0;
+  top: 36px;
+  width: 190px;
+  z-index: 3;
+  background: white;
+  border: 1px solid #ececf5;
+  box-shadow: 0 8px 24px #25294318;
+  padding: 6px;
+  border-radius: 10px;
+}
+.archive-more button {
+  width: 100%;
+  border: 0;
+  justify-content: flex-start;
+}
+.archive-list-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px 12px;
+}
+.archive-list-heading h3,
+.archive-settings h3 {
+  font-size: 16px;
+  margin: 0;
+}
+.archive-list-heading span {
+  font-size: 13px;
+  color: #8a90aa;
+}
+.archive-list {
+  overflow: auto;
+  min-height: 90px;
+  flex: 1;
+  margin: 0 20px;
+  scrollbar-width: thin;
+  scrollbar-color: #c8c4dc transparent;
+}
+.archive-list table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  table-layout: fixed;
+}
+.archive-list th {
+  text-align: left;
+  font-weight: 500;
+  color: #7e85a0;
+  background: #f7f8fc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.archive-list th:first-child {
+  width: 44px;
+}
+.archive-list th:nth-child(3),
+.archive-list th:nth-child(4) {
+  width: 104px;
+}
+.archive-list th:last-child {
+  width: 82px;
+}
+.archive-list th,
+.archive-list td {
+  height: 48px;
+  padding: 9px 12px;
+  border-bottom: 1px solid #eceef6;
+  vertical-align: middle;
+}
+.archive-list th:nth-child(3),
+.archive-list th:nth-child(4),
+.archive-list td:nth-child(3),
+.archive-list td:nth-child(4) {
+  text-align: right;
+  white-space: nowrap;
+}
+.archive-entry-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.archive-entry-name svg {
+  flex-shrink: 0;
+  color: #7761ef;
+}
+.archive-entry-name svg.unsafe {
+  color: #ca5465;
+}
+.archive-entry-name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.archive-list tr.selected {
+  background: #f0edff;
+}
+.archive-list tbody tr:hover {
+  background: #f7f5ff;
+}
+.archive-row-actions {
+  display: flex;
+  gap: 2px;
+}
+.archive-row-actions button {
+  border: 0;
+  background: transparent;
+  padding: 4px;
+  color: #7160ec;
+  opacity: 0;
+}
+.archive-list tr.selected .archive-row-actions button,
+.archive-list tr:hover .archive-row-actions button,
+.archive-row-actions:focus-within button {
+  opacity: 1;
+}
+.archive-dialog input[type='checkbox']:not([role='switch']) {
+  accent-color: #7160ec;
+  width: 17px;
+  height: 17px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.archive-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-top: 1px solid #ececf5;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.archive-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 20px 12px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.archive-breadcrumbs > span {
+  display: flex;
+  align-items: center;
+  color: #9298af;
+}
+.archive-dialog .archive-breadcrumbs button {
+  padding: 5px 8px;
+  border: 0;
+  font-size: 13px;
+}
+.archive-breadcrumbs strong {
+  font-size: 12px;
+  color: #7560ef;
+  margin-left: 12px;
+}
+.archive-name-label {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.archive-name-label small {
+  color: #9298af;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.archive-dialog .archive-folder-link {
+  border: 0;
+  padding: 0;
+  justify-content: flex-start;
+  background: transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  text-align: left;
+}
+.archive-pagination > span:first-child {
+  flex: 1;
+}
+.archive-pagination button {
+  border: 0;
+  padding: 6px;
+}
+.archive-page-number {
+  color: #747b98;
+}
+.archive-settings {
+  /* 覆盖主导航 aside 的固定宽度，让设置栏铺满网格列。 */
+  width: 100%;
+  min-width: 0;
+  border-right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+  overflow: auto;
+  padding: 24px 22px;
+  background: #fafaff;
+  border-left: 1px solid #ececf5;
+}
+.archive-settings fieldset {
+  margin: 4px 0 0;
+  padding: 0;
+  border: 0;
+}
+.archive-settings legend {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 16px;
+}
+.archive-destination {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 19px;
+  cursor: pointer;
+}
+.archive-destination:last-child {
+  margin-bottom: 0;
+}
+.archive-destination input {
+  accent-color: #7160ec;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.archive-destination strong {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  line-height: 20px;
+}
+.archive-destination small {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #9298af;
+  display: block;
+  margin-top: 5px;
+}
+.archive-setting-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.archive-setting-field input,
+.archive-setting-field select,
+.archive-password input,
+.archive-pack input,
+.archive-pack select,
+.archive-add textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #e0dfec;
+  border-radius: 8px;
+  background: white;
+  color: #414664;
+  padding: 11px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+}
+.archive-password {
+  padding-top: 22px;
+  border-top: 1px solid #e5e4ee;
+}
+.archive-password summary {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  list-style: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+.archive-password[open] summary > svg:first-child {
+  transform: rotate(90deg);
+}
+.archive-password input {
+  margin-top: 14px;
+}
+.archive-password small {
+  display: block;
+  margin-top: 8px;
+  color: #9298af;
+  font-size: 12px;
+}
+.archive-settings-hint {
+  margin: auto 0 0;
+  padding-top: 24px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #9298af;
+}
+.archive-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-top: 1px solid #ececf5;
+  flex-shrink: 0;
+}
+.archive-footer > span {
+  flex: 1;
+  font-size: 13px;
+  color: #9298af;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.archive-footer > button {
+  min-width: 100px;
+}
+.archive-dialog .archive-footer {
+  padding: 6px 14px;
+  gap: 10px;
+  min-height: 42px;
+}
+.archive-dialog .archive-footer > button {
+  min-width: 70px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.archive-preview-status {
+  min-width: 0;
+}
+.archive-preview-status .document-footer,
+.archive-preview-status .document-reader-status {
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+}
+.archive-preview-status .document-footer-actions {
+  display: none;
+}
+.archive-preview-status .document-status {
+  font-size: 11px;
+  gap: 8px;
+  white-space: nowrap;
+}
+.archive-footer > span {
+  font-size: 11px;
+}
+@media (max-width: 720px) {
+  .archive-dialog .archive-footer {
+    flex-wrap: wrap;
+  }
+  .archive-preview-status {
+    flex-basis: 100%;
+  }
+}
+.archive-empty {
+  padding: 36px;
+  text-align: center;
+  color: #9298af;
+  font-size: 14px;
+}
+.archive-add {
+  padding: 14px 22px;
+  background: #fafaff;
+  flex-shrink: 0;
+  max-height: 230px;
+  overflow: auto;
+  border-bottom: 1px solid #ececf5;
+}
+.archive-add label {
+  font-size: 13px;
+  color: #747b98;
+}
+.archive-add textarea {
+  display: block;
+  margin: 8px 0;
+  resize: vertical;
+}
+.archive-add button {
+  margin-right: 8px;
+}
+.archive-add small {
+  display: block;
+  color: #8a90aa;
+  margin-top: 8px;
+}
+.archive-pack {
+  padding: 24px;
+  overflow: auto;
+}
+.archive-pack ul {
+  overflow-wrap: anywhere;
+}
+.archive-pack label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+.archive-error,
+.archive-notice {
+  font-size: 13px;
+  padding: 10px 22px;
+  overflow-wrap: anywhere;
+  max-height: 84px;
+  overflow: auto;
+  flex-shrink: 0;
+}
+.archive-error {
+  color: #c64f64;
+  background: #fff5f6;
+}
+.archive-notice {
+  color: #39866d;
+  background: #f3faf7;
+}
+.archive-dialog > .modal-backdrop {
+  z-index: 12;
+}
+@media (max-width: 1050px) {
+  .archive-workspace {
+    grid-template-columns: minmax(0, 1fr) 260px;
+  }
+  .archive-toolbar {
+    flex-wrap: wrap;
+    padding: 10px 16px;
+  }
+  .archive-search {
+    margin-right: 0;
+    flex-basis: 100%;
+  }
+  .archive-list {
+    margin: 0 12px;
+  }
+  .archive-list th:nth-child(4),
+  .archive-list td:nth-child(4) {
+    display: none;
+  }
+}
+@media (max-width: 720px) {
+  .archive-dialog {
+    width: calc(100vw - 24px);
+    height: calc(100dvh - 24px);
+  }
+  .archive-workspace {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  .archive-content {
+    min-height: 360px;
+    flex-shrink: 0;
+  }
+  .archive-settings {
+    overflow: visible;
+    flex-shrink: 0;
+    border-left: 0;
+    border-top: 1px solid #ececf5;
+  }
+  .archive-heading {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .archive-heading h2 {
+    font-size: 17px;
+  }
+  .archive-heading p span {
+    display: none;
+  }
+  .archive-footer {
+    padding: 12px 16px;
+  }
+  .archive-footer > span {
+    font-size: 11px;
+  }
+}
+/* ZIP 创建复用左右分栏；来源行高度与虚拟列表的 56 px 保持一致。 */
+.archive-dialog.archive-pack-dialog:not(.expanded) {
+  height: min(740px, calc(100dvh - 64px));
+}
+.archive-pack-content .archive-toolbar {
+  border-bottom: 0;
+}
+.archive-pack-content .archive-search {
+  flex: 0 1 420px;
+  margin-right: 0;
+}
+.archive-pack-list {
+  border: 1px solid #eceef6;
+}
+.archive-pack-list th:first-child,
+.archive-pack-list th:last-child {
+  width: 50%;
+}
+.archive-pack-list th {
+  height: 42px;
+}
+.archive-pack-list tbody tr:not(.archive-pack-spacer) td {
+  height: 56px;
+}
+.archive-pack-list td:nth-child(2) {
+  color: #9298af;
+  overflow: hidden;
+}
+.archive-pack-list td:nth-child(2) > span {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.archive-pack-list .archive-pdf-icon {
+  color: #e25168;
+}
+.archive-pack-list tr.archive-pack-spacer td {
+  padding: 0;
+  border: 0;
+}
+.archive-pack-preserve {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  color: #9298af;
+  padding: 16px 22px;
+  flex-shrink: 0;
+}
+.archive-pack-settings {
+  gap: 26px;
+}
+.archive-directory-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.archive-directory-input input {
+  padding-right: 38px;
+}
+.archive-directory-input > svg {
+  position: absolute;
+  right: 12px;
+  color: #9298af;
+  pointer-events: none;
+}
+.archive-pack-settings .archive-setting-field small {
+  color: #9298af;
+  font-size: 12px;
+  font-weight: 400;
+}
+.archive-settings .archive-pack-policy {
+  border-top: 1px solid #e5e4ee;
+  padding-top: 22px;
+}
+.archive-settings .archive-pack-policy legend {
+  float: left;
+  width: 100%;
+  margin-bottom: 18px;
+}
+.archive-pack-policy .archive-destination {
+  clear: both;
+}
+@media (max-width: 720px) {
+  .archive-dialog.archive-pack-dialog:not(.expanded) {
+    height: calc(100dvh - 24px);
+  }
+  .archive-pack-content {
+    min-height: 300px;
+  }
+  .archive-pack-settings {
+    gap: 20px;
+  }
+}
+
+/* 三栏包浏览：目录、内联预览与解压设置各自拥有滚动区域。 */
+.archive-browser {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 260px;
+  min-height: 0;
+  overflow: hidden;
+}
+.archive-browser.is-list {
+  grid-template-columns: minmax(0, 1fr) 260px;
+}
+.archive-browser .archive-content {
+  min-width: 0;
+  border-right: 1px solid #ececf5;
+  overflow: hidden;
+}
+.archive-browser .archive-toolbar {
+  flex-wrap: wrap;
+  padding: 12px;
+  gap: 6px;
+}
+.archive-browser .archive-search {
+  flex-basis: 100%;
+  min-width: 0;
+}
+.archive-browser .archive-toolbar button {
+  font-size: 11px;
+  padding: 6px;
+}
+.archive-browser .archive-list-heading {
+  padding: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.archive-browser .archive-list-heading h3 {
+  font-size: 15px;
+}
+.archive-browser .archive-list-heading button {
+  padding: 5px 8px;
+  font-size: 11px;
+}
+.archive-tree-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.archive-tree-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding-right: 8px;
+  font-size: 12px;
+}
+.archive-tree-row.active {
+  background: #efebff;
+}
+.archive-tree-row > svg {
+  color: #7860e8;
+  flex-shrink: 0;
+}
+.archive-tree-row input {
+  accent-color: #7055ed;
+  margin: 0;
+}
+.archive-dialog .archive-tree-chevron {
+  width: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  flex-shrink: 0;
+}
+.archive-dialog .archive-tree-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  text-align: left;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+}
+.archive-tree-row small {
+  color: #969cb1;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.archive-tree-footer {
+  border-top: 1px solid #ececf5;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.archive-tree-footer button {
+  font-size: 11px;
+  padding: 4px;
+}
+.archive-preview-pane {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.archive-preview-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #969cb1;
+  font-size: 13px;
+}
+.archive-preview-placeholder h3 {
+  font-size: 16px;
+  color: #444860;
+}
+.archive-inline-document {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+}
+.archive-inline-document .remote-document {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 10px;
+  min-width: 0;
+}
+.archive-inline-document .remote-document.expanded {
+  width: 100%;
+  height: 100%;
+}
+.archive-inline-document .document-heading > svg,
+.archive-inline-document .document-heading p,
+.archive-inline-document .document-heading > button {
+  display: none;
+}
+.archive-inline-document .document-heading h2 {
+  font-size: 14px;
+}
+.archive-inline-document .document-footer {
+  padding: 8px 0;
+}
+.archive-inline-document .document-footer-actions {
+  display: none;
+}
+.archive-browser .archive-settings {
+  padding: 18px;
+  min-width: 0;
+}
+.archive-browser .archive-settings h3 {
+  font-size: 16px;
+}
+.archive-browser .archive-settings fieldset {
+  margin-bottom: 12px;
+}
+.archive-browser .archive-destination {
+  margin: 10px 0;
+}
+.archive-browser .archive-destination strong,
+.archive-browser .archive-setting-field {
+  font-size: 12px;
+}
+.archive-browser .archive-destination small {
+  font-size: 11px;
+}
+@media (max-width: 1000px) {
+  .archive-browser {
+    grid-template-columns: 230px minmax(0, 1fr);
+  }
+  .archive-browser .archive-settings {
+    display: none;
+  }
+  .archive-browser.is-list {
+    grid-template-columns: 1fr 230px;
+  }
+  .archive-browser.is-list .archive-settings {
+    display: flex;
+  }
+}
+
+.archive-browser .archive-settings fieldset > select {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #e6e5f0;
+  border-radius: 8px;
+  color: #353954;
+  background: #fff;
+}
+.archive-browser .archive-settings fieldset > small {
+  display: block;
+  color: #9298af;
+  font-size: 11px;
+  margin-top: 7px;
+}
+.archive-inline-document .text-document .document-heading {
+  min-height: 40px;
+  padding: 6px 10px;
+}
+
+/* 折叠仅隐藏侧栏，保留已挂载的目录、表单与预览滚动状态。 */
+.archive-layout-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid #ececf5;
+  flex-shrink: 0;
+}
+
+/* 两层顶部：归档身份与文件操作。工具栏通过 portal 复用编辑器状态。 */
+.archive-dialog .archive-heading {
+  padding: 12px 20px;
+  gap: 12px;
+}
+.archive-dialog .archive-heading > svg {
+  width: 26px;
+  height: 26px;
+}
+.archive-dialog .archive-heading h2 {
+  font-size: 17px;
+}
+.archive-dialog .archive-heading p {
+  font-size: 11px;
+  margin-top: 4px;
+}
+.archive-dialog .archive-format {
+  font-size: 10px;
+  padding: 3px 7px;
+}
+.archive-layout-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 80px;
+  border-left: 1px solid #ececf5;
+  padding-left: 12px;
+}
+.archive-layout-file > svg {
+  flex-shrink: 0;
+  color: #777b94;
+}
+.archive-layout-file .archive-format {
+  flex-shrink: 0;
+}
+.archive-preview-tools {
+  flex-shrink: 0;
+  margin-right: 10px;
+  padding-right: 16px;
+  border-right: 1px solid #ececf5;
+}
+.archive-preview-tools .document-toolbar {
+  padding: 0;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.archive-preview-tools .document-toolbar .toolbar-spacer {
+  display: none;
+}
+.archive-preview-tools .document-toolbar label {
+  font-size: 12px;
+  white-space: nowrap;
+}
+.archive-preview-tools .archive-content-search {
+  display: flex;
+  gap: 8px;
+  width: 210px;
+  padding: 7px 10px;
+  border: 1px solid #e5e7f0;
+  border-radius: 7px;
+  background: #f8f9fc;
+  color: #9298af;
+}
+.archive-preview-tools .archive-content-search:focus-within {
+  border-color: #8c7bf1;
+}
+.archive-preview-tools .archive-content-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  padding: 0;
+  background: transparent;
+  font-size: 12px;
+}
+.archive-preview-tools .archive-content-search input:focus-visible {
+  outline: none;
+}
+.archive-content-search kbd {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.archive-settings-panel .archive-settings {
+  padding-top: 38px;
+}
+.archive-inline-document .document-heading {
+  display: none;
+}
+.archive-inline-document .remote-document {
+  padding: 0;
+}
+.archive-inline-document .document-footer {
+  padding: 6px 12px;
+}
+@media (max-width: 900px) {
+  .archive-layout-toolbar {
+    flex-wrap: wrap;
+  }
+  .archive-layout-file {
+    flex-basis: calc(100% - 150px);
+  }
+  .archive-preview-tools {
+    margin-left: auto;
+  }
+}
+.archive-layout-toolbar button {
+  font-size: 12px;
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+.archive-layout-filename {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  color: #353954;
+}
+.archive-browser {
+  position: relative;
+  --archive-files-width: min(24vw, 280px);
+  --archive-settings-width: min(24vw, 260px);
+  grid-template-columns: var(--archive-files-width) minmax(0, 1fr) var(--archive-settings-width);
+}
+.archive-browser.files-collapsed {
+  --archive-files-width: 0px;
+}
+.archive-browser.settings-collapsed {
+  --archive-settings-width: 0px;
+}
+.archive-browser.is-list {
+  grid-template-columns: minmax(0, 1fr) var(--archive-settings-width);
+}
+.archive-browser.is-list.files-collapsed {
+  grid-template-columns: 0px minmax(0, 1fr);
+}
+.archive-browser > .archive-content {
+  grid-column: 1;
+}
+.archive-browser > .archive-preview-pane {
+  grid-column: 2;
+}
+.archive-browser > .archive-settings-panel {
+  grid-column: 3;
+}
+.archive-browser.is-list > .archive-settings-panel {
+  grid-column: 2;
+}
+.archive-browser > [hidden] {
+  display: none;
+}
+.archive-settings-panel {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #faf9ff;
+}
+.archive-settings-panel .archive-settings {
+  display: flex;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.archive-browser .archive-restore-panel {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  padding: 9px 3px;
+  border-radius: 6px;
+  background: #fff;
+  color: #6954ee;
+}
+.archive-restore-panel.left {
+  left: 3px;
+}
+.archive-restore-panel.right {
+  right: 3px;
+}
+.files-collapsed .archive-preview-pane {
+  padding-left: 28px;
+}
+.settings-collapsed .archive-preview-pane {
+  padding-right: 28px;
+}
+.archive-dialog .archive-collapse-settings {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  z-index: 1;
+  padding: 4px;
+  background: transparent;
+  border: 0;
+}
+.archive-dialog .archive-collapse-files {
+  margin-left: auto;
+  padding: 4px;
+}
+@media (max-width: 720px) {
+  .archive-layout-toolbar {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .archive-layout-filename {
+    order: 4;
+    flex-basis: 100%;
+  }
+}

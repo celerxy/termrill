@@ -1,0 +1,149 @@
+/* 创建页专用紧凑设置；运行时只读字段仍允许选择和复制文本。 */
+.archive-dialog .archive-pack-settings {
+  background: #fff;
+  padding: 14px 20px;
+  gap: 10px;
+  overflow: visible;
+  box-sizing: border-box;
+  height: auto;
+}
+/* 取消人为撑高的 360px 最小高度，设置仍按固有内容高度保留空间。 */
+.archive-dialog .archive-pack-page > .archive-pack-workspace {
+  flex: 1 1 auto;
+  min-height: 300px;
+  overflow: visible;
+}
+/* 给设置和来源留出空间，不靠隐藏滚动条或裁剪内容消除溢出。 */
+.archive-dialog .pack-progress {
+  margin-top: 12px;
+  padding-top: 16px;
+  padding-bottom: 12px;
+}
+.archive-dialog .pack-stages {
+  margin: 16px 0;
+}
+.archive-dialog .pack-metrics {
+  margin: 16px 0;
+}
+.pack-settings-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.archive-pack-settings .pack-settings-heading h3 {
+  margin: 0;
+  font-size: 17px;
+}
+.pack-settings-heading > svg {
+  margin-left: auto;
+  color: #9298af;
+}
+.pack-settings-badge {
+  border-radius: 20px;
+  padding: 3px 9px;
+  background: #eeeaff;
+  color: #7158ed;
+  font-size: 11px;
+}
+.pack-settings-subtitle {
+  margin: -8px 0 2px;
+  color: #9298af;
+  font-size: 12px;
+}
+.archive-pack-settings .archive-setting-field {
+  gap: 7px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.pack-setting-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.pack-setting-input > svg {
+  position: absolute;
+  left: 11px;
+  color: #7158ed;
+  pointer-events: none;
+}
+.archive-pack-settings .pack-setting-input input {
+  height: 38px;
+  padding: 8px 10px 8px 36px;
+  box-sizing: border-box;
+  background: #faf9ff;
+}
+.archive-pack-settings .pack-setting-input input[readonly] {
+  color: #555b78;
+  cursor: text;
+}
+.archive-dialog .archive-pack-settings .archive-pack-policy {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  flex-shrink: 0;
+  min-width: 0;
+}
+.archive-dialog .archive-pack-settings .archive-pack-policy legend {
+  float: none;
+  width: auto;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.pack-policy-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.archive-pack-settings .pack-policy-options .archive-destination {
+  margin: 0;
+  padding: 9px 7px;
+  gap: 5px;
+  align-items: center;
+  border: 1px solid #ece9f5;
+  border-radius: 8px;
+  background: #faf9ff;
+}
+.archive-pack-settings .archive-destination:has(input:checked) {
+  background: #eeeaff;
+  border-color: #ded5ff;
+}
+.archive-pack-settings .archive-destination input {
+  width: 15px;
+  height: 15px;
+}
+.archive-pack-settings .archive-destination strong {
+  font-size: 11px;
+  line-height: 17px;
+}
+.archive-pack-settings fieldset:disabled .archive-destination {
+  cursor: default;
+  color: #747d9c;
+}
+.archive-pack-settings fieldset:disabled .archive-destination:has(input:checked) {
+  color: #454063;
+}
+.archive-pack-settings fieldset:disabled input {
+  opacity: 1;
+}
+.pack-settings-footnote {
+  border-top: 1px solid #ececf5;
+  padding-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: #9298af;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.pack-settings-footnote > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+@media (max-width: 720px) {
+  .archive-dialog .archive-pack-settings {
+    overflow: visible;
+    padding: 18px 20px;
+  }
+}

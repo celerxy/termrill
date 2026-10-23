@@ -1,0 +1,96 @@
+.modal.batch-rename {
+  display: flex;
+  flex-direction: column;
+  width: 820px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 40px);
+  padding: 0;
+  overflow: hidden;
+}
+.batch-rename > header,
+.batch-rename > footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  flex-shrink: 0;
+}
+.batch-rename > header {
+  border-bottom: 1px solid #e9ebf3;
+}
+.batch-rename h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.batch-rename > header button {
+  margin-left: auto;
+  padding: 5px;
+}
+.batch-rename > footer {
+  justify-content: flex-end;
+  border-top: 1px solid #e9ebf3;
+}
+.batch-rename > footer button {
+  padding: 9px 15px;
+}
+.batch-rename-body {
+  padding: 12px 20px;
+  overflow: auto;
+}
+.batch-rename-body p,
+.batch-rename-body small {
+  font-size: 11px;
+  color: #81879e;
+  overflow-wrap: anywhere;
+}
+.batch-rename fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.batch-rename label {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0;
+  font-size: 12px;
+}
+.batch-rename input {
+  padding: 9px;
+  border: 1px solid #dfe2ed;
+  border-radius: 7px;
+}
+.batch-rename-numbers {
+  display: flex;
+  gap: 20px;
+}
+.batch-rename-numbers input {
+  width: 140px;
+}
+.batch-rename-table {
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid #e9ebf3;
+  border-radius: 8px;
+}
+.batch-rename-table table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.batch-rename-table th,
+.batch-rename-table td {
+  text-align: left;
+  padding: 9px;
+  border-bottom: 1px solid #edf0f6;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.batch-rename-table th {
+  position: sticky;
+  top: 0;
+  background: #f7f8fc;
+}
+.batch-rename-table td small {
+  display: block;
+  color: inherit;
+}

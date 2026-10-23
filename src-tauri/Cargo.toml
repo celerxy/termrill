@@ -1,0 +1,96 @@
+[package]
+name = "termrill-sftp-client"
+version = "0.1.0"
+description = "TermRill desktop SSH and SFTP client"
+edition = "2021"
+
+[lib]
+name = "termrill_sftp_client_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+glob = "0.3"
+tauri = { version = "~2.11.6", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["time", "fs", "io-util", "macros"] }
+futures = "0.3"
+russh = { version = "0.63.3", default-features = false, features = ["ring", "rsa", "flate2"] }
+russh-sftp = "3.0"
+sha2 = "0.10"
+base64 = "0.22"
+rfd = "0.17"
+flate2 = { version = "1", features = ["rust_backend"] }
+tar = "0.4.46"
+bzip2 = "0.5.2"
+xz2 = "0.1.7"
+zip = { version = "4.6.1", default-features = false, features = ["deflate-flate2", "aes-crypto"] }
+encoding_rs = "0.8.35"
+chardetng = "0.1.17"
+sevenz-rust2 = { version = "0.23.0", default-features = false, features = ["aes256", "bzip2", "ppmd", "deflate", "compress"] }
+unrar_sys = "0.5.8"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Security_Credentials", "Win32_Networking_WinSock", "Win32_Storage_FileSystem", "Win32_System_Threading", "Win32_System_IO"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+keyring = { version = "3.6.3", features = ["apple-native"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+keyring = { version = "3.6.3", features = ["sync-secret-service", "crypto-rust"] }
+
+[dev-dependencies]
+sevenz-rust2 = { version = "0.23.0", default-features = false, features = ["compress"] }
+# 仅作为本机协议基线与故障注入回归，生产程序全部使用 russh。
+ssh2 = { version = "0.9", features = ["openssl-on-win32", "vendored-openssl"] }
+
+# 原生 SSH 的 Rust 密码学和协议处理在未优化 dev 构建中开销明显。
+# 只优化传输/解码依赖；应用代码仍保留默认调试设置，release 不受影响。
+
+[profile.dev.package.russh]
+opt-level = 3
+
+[profile.dev.package.russh-sftp]
+opt-level = 3
+
+[profile.dev.package.chacha20]
+opt-level = 3
+
+[profile.dev.package.poly1305]
+opt-level = 3
+
+[profile.dev.package.aes]
+opt-level = 3
+
+[profile.dev.package.ctr]
+opt-level = 3
+
+[profile.dev.package.ghash]
+opt-level = 3
+
+[profile.dev.package.polyval]
+opt-level = 3
+
+[profile.dev.package.sha2]
+opt-level = 3
+
+[profile.dev.package.sha1]
+opt-level = 3
+
+[profile.dev.package.hmac]
+opt-level = 3
+
+[profile.dev.package.curve25519-dalek]
+opt-level = 3
+
+[profile.dev.package.flate2]
+opt-level = 3
+
+[profile.dev.package.miniz_oxide]
+opt-level = 3
+
+[profile.dev.package.zip]
+opt-level = 3

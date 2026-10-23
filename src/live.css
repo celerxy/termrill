@@ -1,0 +1,999 @@
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+button:disabled:hover {
+  background: inherit;
+}
+button.primary:disabled:hover {
+  background: #6159e8;
+}
+.app-shell {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+main {
+  min-height: 0;
+  overflow: hidden;
+}
+main > header,
+main > footer,
+main > .tabs {
+  flex-shrink: 0;
+}
+aside {
+  overflow: auto;
+}
+.connected-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38b986;
+  flex-shrink: 0;
+}
+.host-wrap {
+  position: relative;
+}
+.host {
+  padding-right: 14px;
+}
+.host small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.host-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
+  padding: 0 9px 3px;
+  opacity: 0;
+  height: 18px;
+}
+.host-wrap:hover .host-actions,
+.host-wrap:focus-within .host-actions {
+  opacity: 1;
+}
+.host-actions button {
+  padding: 2px 5px;
+  color: #9ca1b5;
+}
+.sidebar-empty {
+  padding: 25px 12px;
+  color: #999fb2;
+  font-size: 11px;
+  line-height: 2;
+}
+.panes {
+  min-height: 0;
+  flex: 1;
+}
+.file-pane {
+  min-height: 0;
+  max-height: 600px;
+}
+.file-scroll {
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+}
+/* 自定义文件列表滚动条，避免 WebView2 显示原生上下箭头按钮。 */
+.file-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.file-scroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.file-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.file-scroll::-webkit-scrollbar-thumb {
+  background: #c2c6d3;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+.file-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a3a9bc;
+}
+.file-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.file-scroll table {
+  /* 文件列表通过行状态选择项目，避免拖动或多选时出现浏览器文字高亮。 */
+  user-select: none;
+  table-layout: fixed;
+}
+.file-scroll th:first-child {
+  width: 44%;
+}
+.file-scroll th:nth-child(2) {
+  width: 22%;
+}
+.file-scroll th:nth-child(3) {
+  width: 13%;
+}
+.file-scroll th:last-child {
+  width: 21%;
+}
+.file-scroll .file-type {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 8px;
+}
+.file-scroll .file-entry,
+.file-scroll .file-entry td {
+  height: 46px;
+}
+.file-scroll .virtual-spacer td {
+  padding: 0;
+  border: 0;
+  font-size: 0;
+  line-height: 0;
+}
+.file-scroll .virtual-spacer {
+  pointer-events: none;
+}
+.file-scroll thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.file-scroll td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 8px;
+}
+.file-scroll td:last-child {
+  white-space: nowrap;
+  font-size: 10px;
+}
+.pane-heading > .count + button {
+  margin-left: auto;
+}
+.path-bar input {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font-size: 11px;
+}
+.pane-tools {
+  display: flex;
+  align-items: center;
+  padding-right: 14px;
+  gap: 3px;
+}
+.pane-tools .search {
+  flex: 1;
+  min-width: 0;
+  padding-right: 6px;
+}
+.pane-tools .search input {
+  width: 100%;
+  min-width: 0;
+}
+.pane-tools > button {
+  color: #979db3;
+  padding: 6px;
+}
+.empty-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 45px 18px;
+  color: #b0b5c6;
+}
+.empty-pane p {
+  font-size: 11px;
+  color: #a0a6b8;
+}
+.drop-hover {
+  outline: 2px dashed #7870e7;
+  background: #f8f7ff;
+}
+.transfer {
+  flex-shrink: 0;
+}
+.transfer-top {
+  display: flex;
+  align-items: center;
+}
+.transfer-heading {
+  flex: 1;
+}
+.clear-queue {
+  font-size: 10px;
+  margin-right: 16px;
+  padding: 5px;
+  color: #9ca3b6;
+  white-space: nowrap;
+}
+.transfer-table {
+  scrollbar-width: thin;
+  scrollbar-color: #c6c3da transparent;
+  max-height: min(240px, 22vh);
+  overflow: auto;
+}
+.transfer-table::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.transfer-table::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.transfer-table::-webkit-scrollbar-track {
+  background: transparent;
+}
+.transfer-table::-webkit-scrollbar-thumb {
+  background: #c6c3da;
+  border-radius: 6px;
+}
+.transfer-table::-webkit-scrollbar-thumb:hover {
+  background: #aaa5c7;
+}
+.transfer-table::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.empty-queue {
+  padding: 24px 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  color: #a1a6ba;
+  font-size: 11px;
+}
+.transfer-row strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.transfer-detail {
+  padding: 0 0 10px 31px;
+  font-size: 10px;
+  color: #9da4b8;
+  overflow-wrap: anywhere;
+}
+.transfer-scan-time {
+  display: block;
+  margin-top: 3px;
+  color: #9299ad;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.transfer-item {
+  border-bottom: 1px solid #f1f3f8;
+}
+.transfer-item:last-child {
+  border-bottom: 0;
+}
+.transfer-item .transfer-row {
+  border-bottom: 0;
+}
+.error-text {
+  color: #d56b76;
+}
+.browser-banner {
+  padding: 11px 25px;
+  background: #fff7e6;
+  color: #9a8350;
+  font-size: 11px;
+}
+.browser-banner code {
+  font-size: 10px;
+}
+.modal {
+  max-height: 90vh;
+  overflow: auto;
+}
+.connection-modal {
+  width: 460px;
+}
+.modal fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.modal input,
+.modal select {
+  font: inherit;
+}
+.modal select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 7px;
+  border: 1px solid #e2e5ef;
+  border-radius: 7px;
+  color: #5f667e;
+  background: #fcfcfe;
+}
+.modal .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  padding-top: 6px;
+  color: #747b93;
+}
+.modal .checkbox input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #6159e8;
+}
+.jump-fields {
+  margin-top: 12px;
+  border: 1px solid #e9eaf5;
+  background: #fafaff;
+  padding: 17px 15px 0;
+  border-radius: 9px;
+}
+.jump-fields h3 {
+  margin: 0 0 17px;
+  color: #76708f;
+  font-size: 12px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+.modal-actions button {
+  padding: 11px 15px;
+}
+.form-hint {
+  line-height: 1.6 !important;
+  margin: 9px 0 17px !important;
+  color: #9a9fb2 !important;
+}
+.key-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.key-input input {
+  flex: 1;
+}
+.key-input button {
+  padding: 10px;
+  margin-top: 7px;
+  border: 1px solid #e2e5ef;
+}
+.inline-error {
+  white-space: pre-wrap;
+  color: #c5616c;
+  background: #fff3f4;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.fingerprint {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  background: #f4f3fc;
+  border-radius: 7px;
+  padding: 13px;
+  line-height: 1.7;
+  margin: 13px 0;
+}
+.fingerprint.previous {
+  background: #fff3f3;
+  color: #bd7a83;
+}
+.trust-modal {
+  width: 480px;
+}
+.trust-modal > strong {
+  font-size: 12px;
+}
+.terminal-panel {
+  margin: 0 30px 24px;
+  border-radius: 11px;
+  background: #ffffff;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.terminal-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #30374e;
+  height: 32px;
+  padding: 4px 14px;
+  background: #f7f8fc;
+  font-size: 11px;
+}
+.terminal-heading strong {
+  font-weight: 500;
+}
+.terminal-heading > span {
+  color: #7f87a4;
+  font-size: 10px;
+}
+.terminal-heading button {
+  margin-left: auto;
+  padding: 4px;
+}
+.terminal-heading button:hover {
+  background: #ffffff15;
+}
+.terminal-body {
+  position: relative;
+  height: clamp(120px, 25vh, 280px);
+  background: #ffffff;
+}
+.terminal-host {
+  position: absolute;
+  inset: 12px 15px;
+  min-width: 0;
+  overflow: hidden;
+}
+.terminal-body .xterm {
+  height: 100%;
+  /* 留白放在 host 外面，FitAddon 和绝对定位 viewport 使用同一个无 padding 区域。 */
+  padding: 0;
+}
+.terminal-body .xterm-scrollable-element > .scrollbar > .slider {
+  /* xterm 内联设置滑块宽度；只收细可见滑块，保留滚动轨道的鼠标命中范围。 */
+  width: 5px !important;
+  left: auto !important;
+  right: 4px;
+  border: 0;
+  border-radius: 5px;
+}
+.terminal-body .xterm-viewport::-webkit-scrollbar {
+  width: 5px;
+  height: 0;
+}
+.terminal-body .xterm .xterm-viewport {
+  /* xterm 按需加载的旧 viewport 样式默认黑色；优先级必须高于库样式。
+     当前版本通过 xterm-scrollable-element 滚动，旧层不再承担滚动。 */
+  overflow: hidden;
+  background-color: #ffffff;
+}
+.terminal-body .xterm-scrollable-element > .scrollbar.horizontal {
+  display: none !important;
+}
+.terminal-body .xterm-viewport::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+.terminal-body .xterm-viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-body .xterm-viewport::-webkit-scrollbar-thumb {
+  background: #626b8a;
+  border-radius: 5px;
+}
+.toast {
+  max-width: 80vw;
+  overflow-wrap: anywhere;
+}
+.toast button {
+  flex-shrink: 0;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 1100px) {
+  header {
+    flex-wrap: wrap;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .header-actions > button {
+    font-size: 11px;
+  }
+  .terminal-panel {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+.termrill-dragging {
+  cursor: grabbing;
+}
+.termrill-dragging * {
+  user-select: none;
+}
+.terminal-loading {
+  margin: 0 30px 24px;
+  padding: 20px;
+  color: #9299ad;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+.file-actions button {
+  padding: 8px 12px;
+  border: 1px solid #e2e5ef;
+  border-radius: 8px;
+  background: white;
+}
+.text-editor {
+  width: min(960px, 92vw);
+}
+.text-editor textarea {
+  width: 100%;
+  height: 45vh;
+  resize: vertical;
+  font-family: Consolas, monospace;
+  padding: 12px;
+  border: 1px solid #e2e5ef;
+  border-radius: 8px;
+}
+.action-paths {
+  max-height: 220px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+
+.auth-backdrop {
+  z-index: 200;
+}
+.auth-backdrop label {
+  display: block;
+  margin: 14px 0;
+}
+.auth-backdrop input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e2e5ef;
+  border-radius: 8px;
+}
+.credential-actions {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.transfer-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.transfer-item .transfer-row {
+  grid-template-columns: 20px minmax(170px, 1fr) minmax(220px, 1.3fr) minmax(120px, 0.55fr) minmax(
+      76px,
+      auto
+    );
+  gap: 20px;
+  padding-block: 18px;
+  align-items: center;
+}
+.transfer-file {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+.transfer-progress-group {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.transfer-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.transfer-progress-meta b {
+  color: #303650;
+}
+.transfer-progress-caption {
+  font-size: 11px;
+  min-height: 14px;
+}
+.transfer-speed {
+  color: #7363e8;
+}
+.transfer-row [data-transfer-status] {
+  border-left: 1px solid #edf0f7;
+  padding-left: 20px;
+}
+.transfer-controls .transfer-toggle {
+  padding: 9px;
+  border: 1px solid #e5e8f2;
+  border-radius: 10px;
+}
+@media (max-width: 1000px) {
+  .transfer-item .transfer-row {
+    grid-template-columns: 20px minmax(120px, 1fr) minmax(180px, 1.2fr) 110px 76px;
+    gap: 10px;
+  }
+  .transfer-row [data-transfer-status] {
+    padding-left: 10px;
+  }
+}
+@media (max-width: 720px) {
+  .transfer-item .transfer-row {
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+  }
+  .transfer-progress-group {
+    grid-column: 2;
+  }
+  .transfer-row [data-transfer-status] {
+    grid-column: 2;
+    border-left: 0;
+    padding-left: 0;
+  }
+  .transfer-controls {
+    grid-column: 3;
+    grid-row: 1 / 4;
+  }
+}
+.transfer-controls button {
+  padding: 5px 7px;
+  border-radius: 6px;
+}
+
+.file-context-menu {
+  position: fixed;
+  z-index: 80;
+  min-width: 208px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid #e3e5f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow:
+    0 10px 36px #26253b24,
+    0 2px 8px #26253b12;
+}
+.file-context-menu button {
+  display: flex;
+  justify-content: flex-start;
+  min-height: 34px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  text-align: left;
+  background: transparent;
+  color: #35364e;
+  font-size: 13px;
+}
+.file-context-menu button:hover:not(:disabled),
+.file-context-menu button:focus-visible {
+  background: #f0edff;
+  color: #6253e8;
+  outline: none;
+}
+.file-context-menu button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.file-context-menu button.danger {
+  color: #c44b60;
+}
+.file-context-menu .menu-separator {
+  height: 1px;
+  margin: 5px 7px;
+  background: #eeeef5;
+}
+
+/* 菜单逐项左对齐，覆盖通用按钮的居中规则，图标与文字使用固定列。 */
+.file-context-menu button svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+.file-context-menu button span {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 20px;
+}
+.credential-panel {
+  margin: 16px 0;
+  padding: 14px;
+  border: 1px solid #e5e6f1;
+  background: #fafaff;
+  border-radius: 10px;
+}
+.modal .credential-option {
+  margin: 0;
+  padding: 0;
+  align-items: flex-start;
+}
+.modal .credential-option input {
+  flex: 0 0 14px;
+  padding: 0;
+  margin-top: 2px;
+}
+.credential-option span {
+  line-height: 18px;
+}
+.credential-panel .credential-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+.credential-actions button {
+  padding: 7px 10px;
+  border: 1px solid #e1e3f0;
+  background: white;
+  font-size: 12px;
+}
+
+.permissions-modal {
+  width: min(520px, 90vw);
+}
+.permission-path {
+  overflow-wrap: anywhere;
+  color: #777d94;
+}
+.property-list {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+.property-list dt {
+  color: #7c8196;
+}
+.property-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.permissions-grid table {
+  width: 100%;
+  margin: 10px 0;
+  border-collapse: collapse;
+}
+.permissions-grid th,
+.permissions-grid td {
+  padding: 9px 6px;
+  text-align: center;
+  border-bottom: 1px solid #eeeef5;
+}
+.permissions-grid th:first-child {
+  text-align: left;
+}
+.modal .permissions-grid input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 0;
+  accent-color: #6159e8;
+}
+.modal .permission-octal {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 14px;
+}
+.modal .permission-octal input {
+  width: 100px;
+  margin: 0;
+}
+.modal .permission-octal select {
+  width: auto;
+  min-width: 180px;
+  margin: 0;
+}
+.directory-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-top: 1px solid #eef0f8;
+  color: #858ba5;
+  font-size: 12px;
+}
+.directory-pagination button {
+  border: 1px solid #e7e9f4;
+  border-radius: 6px;
+  padding: 5px 10px;
+  background: white;
+  color: #6554e8;
+}
+.directory-pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+/* 所有弹窗与同步列表沿用文件列表的滚动条，不显示原生方向按钮。 */
+.modal::-webkit-scrollbar,
+.sync-rows::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.modal::-webkit-scrollbar-button,
+.sync-rows::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.modal::-webkit-scrollbar-track,
+.sync-rows::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal::-webkit-scrollbar-thumb,
+.sync-rows::-webkit-scrollbar-thumb {
+  background: #c2c6d3;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+.modal::-webkit-scrollbar-corner,
+.sync-rows::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* 工作空间保持挂载；隐藏会话不会布局或接收鼠标拖放。 */
+.session-workspace {
+  display: contents;
+}
+.transfer-status-spinner {
+  animation: spin 1s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .transfer-status-spinner {
+    animation: none;
+  }
+}
+.session-workspace[hidden] {
+  display: none;
+}
+.session-tabs {
+  overflow-x: auto;
+  flex-shrink: 0;
+  gap: 6px;
+}
+.tabs > .session-tab {
+  background: transparent;
+  padding: 0;
+  flex-shrink: 0;
+  border-color: transparent;
+}
+.tabs > .session-tab.active {
+  background: #fafbfe;
+  border-color: #e5e7ef;
+}
+.session-tab > button[role='tab'] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 39px;
+  padding: 0 10px 0 14px;
+  border-radius: 9px 0 0 0;
+  background: transparent;
+}
+.session-tab > button[role='tab']:hover {
+  background: #e9e7fb;
+  color: #393253;
+}
+.session-tab > button[role='tab'] > svg {
+  color: #7069df;
+}
+.session-tab-name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.session-tab-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0 10px 0 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #9295aa;
+  box-shadow: none;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+.session-tab-close:hover:not(:disabled) {
+  background: #eeebfc;
+  color: #7564df;
+}
+/* 小型文件操作沿用统一的紧凑标题与底部操作布局。 */
+.modal.compact-operation {
+  width: min(440px, calc(100vw - 32px));
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.compact-operation .compact-operation-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: #fff;
+  border-bottom: 1px solid #edf0f6;
+}
+.compact-operation .compact-operation-heading h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.compact-operation-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f0ecff;
+  color: #6856e9;
+  flex-shrink: 0;
+}
+.compact-operation-icon.danger {
+  color: #d95664;
+  background: #fff0f2;
+}
+.compact-operation-heading button {
+  margin-left: auto;
+  padding: 7px;
+  color: #8a92aa;
+  border-radius: 7px;
+}
+.compact-operation-heading button:hover {
+  background: #f2f0fa;
+}
+.compact-operation form {
+  padding: 14px 24px 0;
+}
+.compact-operation > p {
+  margin: 0;
+  padding: 14px 24px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #818aa2;
+}
+.compact-operation .modal-actions {
+  margin: 0 -24px;
+  padding: 10px 24px;
+  border-top: 1px solid #edf0f6;
+  gap: 12px;
+}
+.compact-operation > .modal-actions {
+  margin: 0;
+}
+.compact-operation .modal-actions button {
+  padding: 9px 16px;
+  border-radius: 8px;
+}
+.compact-operation .danger-action {
+  background: #dc5967;
+}
+.compact-operation .danger-action:hover {
+  background: #c64a58;
+}

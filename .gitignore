@@ -1,0 +1,19 @@
+node_modules/
+dist/
+/artifacts/
+src-tauri/target/
+src-tauri/gen/
+.env*
+*.local
+tests/.venv/
+tests/.runtime*/
+.workbuddy/
+*.bundle
+
+# 用户授权的只读 KVM 性能日志
+/tests/kvm-read-only-results/
+
+# 本机日志、内部工作笔记与 Python 缓存不进入公开仓库
+*.log
+__pycache__/
+*.py[cod]

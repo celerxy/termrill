@@ -1,0 +1,363 @@
+/* PDF 独立阅读工作区；滚动限定在正文与侧栏，工具栏始终可用。 */
+.pdf-reader {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  background: #fff;
+}
+.pdf-reader:fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+.media-document .pdf-reader .document-toolbar.reader-toolbar {
+  display: flex;
+  height: auto;
+  min-height: 44px;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.pdf-search {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #747d9c;
+}
+.pdf-search input {
+  width: 190px;
+  border: 1px solid #e3dff1;
+  border-radius: 7px;
+  padding: 7px 10px;
+  background: #fff;
+  color: #252b49;
+}
+.pdf-search > span {
+  font-size: 12px;
+  min-width: 48px;
+}
+.pdf-reader-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.pdf-reader .document-pdf {
+  min-width: 0;
+  overflow-anchor: none;
+}
+.media-document .pdf-reader .document-pdf {
+  padding: 14px 20px;
+}
+.media-document .pdf-reader .pdf-page {
+  margin-bottom: 24px;
+}
+.media-document .pdf-reader .pdf-thumbnail .pdf-page {
+  margin-bottom: 0;
+}
+.pdf-text-warning {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 11px;
+  color: #94632d;
+  background: #fff6d9;
+  padding: 3px 6px;
+}
+.pdf-sidebar {
+  position: relative;
+  width: 205px;
+  flex: 0 0 205px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  border-right: 1px solid #eceaf4;
+  background: #fafaff;
+}
+.pdf-sidebar-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #eceaf4;
+}
+.pdf-sidebar-tabs button[aria-pressed='true'] {
+  color: #7158ed;
+  border-bottom-color: #7158ed;
+  background: #f1edff;
+}
+.pdf-sidebar-scroll {
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+  padding: 4px 6px;
+}
+.pdf-sidebar > .workspace-resize-x {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 2;
+}
+.pdf-sidebar > .workspace-resize-x:hover,
+.pdf-sidebar > .workspace-resize-x:focus-visible {
+  background: #b8adf4;
+}
+.pdf-outline-row {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 26px;
+  margin: 0;
+  padding: 0;
+}
+.pdf-sidebar [hidden],
+.pdf-sidebar[hidden] {
+  display: none;
+}
+.pdf-outline-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.pdf-outline-tools {
+  padding: 5px 8px;
+  border-bottom: 1px solid #eceaf4;
+  flex-shrink: 0;
+}
+.pdf-outline-tools input {
+  width: 100%;
+  padding: 5px 7px;
+  border: 1px solid #e3dff1;
+  border-radius: 5px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+.pdf-outline-tools > div {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.pdf-reader .pdf-outline-tools button {
+  padding: 3px 5px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.pdf-outline-virtual {
+  position: relative;
+  width: 100%;
+}
+.pdf-reader .pdf-outline-title[aria-current='location'] {
+  color: #6246df;
+  background: #eae4ff;
+  font-weight: 600;
+}
+/* 独立控制目录行高，避免文档弹窗的通用按钮间距改变目录密度。 */
+.pdf-reader .pdf-outline-title {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 26px;
+  padding: 4px;
+  margin: 0;
+  line-height: 18px;
+  white-space: nowrap;
+  text-align: left;
+  overflow-wrap: normal;
+}
+.pdf-reader .pdf-outline-toggle,
+.pdf-outline-indent {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 26px;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+.pdf-outline-message {
+  margin: 0;
+  line-height: 1.5;
+  color: #747d9c;
+}
+.pdf-reader .pdf-thumbnail {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 5px;
+  gap: 6px;
+  border: 1px solid #e7e3f0;
+  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 7px;
+  height: 234px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+.pdf-reader .pdf-thumbnail.selected {
+  border: 2px solid #7158ed;
+  color: #7158ed;
+}
+.pdf-thumbnail .pdf-page {
+  margin: 0 auto;
+  box-shadow: none;
+  pointer-events: none;
+}
+.pdf-reader-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  padding: 10px 14px;
+  gap: 12px;
+  border-top: 1px solid #eceaf4;
+  flex-shrink: 0;
+}
+.pdf-reader-footer > span {
+  font-size: 12px;
+  color: #747d9c;
+}
+.pdf-reader-footer .reader-controls {
+  grid-column: 2;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pdf-reader-footer input {
+  width: 52px;
+}
+/* PDF 控件合入弹窗最底部状态栏；窄窗口横向滚动，不再额外占一整行。 */
+.document-reader-status.pdf-reader-status {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  height: 36px;
+  padding: 2px 12px;
+}
+.pdf-reader-status > span {
+  white-space: nowrap;
+}
+.pdf-status-controls {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 30px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+.pdf-status-controls .pdf-reader-footer {
+  display: block;
+  flex-shrink: 0;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
+  border: 0;
+}
+.pdf-status-controls .pdf-reader-footer > span {
+  display: none;
+}
+.pdf-status-controls .reader-controls {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.pdf-status-controls .reader-controls > * {
+  flex-shrink: 0;
+}
+.pdf-status-controls .reader-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+/* 通用文档样式可能后加载，需明确覆盖其 30px 控件高度。 */
+.pdf-status-controls .pdf-reader-footer .reader-controls :is(button, input, select) {
+  height: 24px;
+  padding: 2px 6px;
+}
+.pdf-status-controls .pdf-reader-footer .reader-controls input {
+  padding-block: 0;
+  line-height: 22px;
+}
+/* 横向滚动容器会裁切外扩描边；焦点环绘制在控件内，避免遮住页码两侧文字。 */
+.pdf-status-controls .reader-controls :is(button, input, select):focus-visible {
+  outline: 2px solid #8a7af8;
+  outline-offset: -2px;
+}
+.pdf-reader .textLayer {
+  text-align: initial;
+}
+.pdf-reader .textLayer mark {
+  color: transparent;
+  /* 原文已经绘制在下层画布上；高亮必须透出画布，不能用不透明背景盖住字形。 */
+  background: rgb(255 216 80 / 28%);
+  padding: 0;
+}
+.pdf-reader .textLayer mark.current-match {
+  background: rgb(255 166 48 / 38%);
+  outline: 1px solid #ed9c35;
+}
+.pdf-reader-message {
+  margin: 0;
+  padding: 8px 16px;
+  color: #a26435;
+  font-size: 12px;
+}
+.pdf-reader,
+.pdf-reader * {
+  scrollbar-width: thin;
+  scrollbar-color: #c8c4dc transparent;
+}
+@supports selector(::-webkit-scrollbar) {
+  .pdf-reader,
+  .pdf-reader * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+  .pdf-reader *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .pdf-reader *::-webkit-scrollbar-thumb {
+    background: #c8c4dc;
+    border-radius: 8px;
+  }
+  .pdf-reader *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .pdf-reader *::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+}
+@media (max-width: 1100px) {
+  .pdf-reader-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pdf-reader-footer .reader-controls {
+    grid-column: 1;
+  }
+}
+@media (max-width: 720px) {
+  .pdf-thumbnail .pdf-page {
+    zoom: 0.7;
+  }
+  .pdf-search {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+}
