@@ -1,5 +1,8 @@
 # TermRill
 
+[![Windows checks](https://github.com/celerxy/termrill/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/celerxy/termrill/actions/workflows/checks.yml)
+[MIT License](LICENSE)
+
 TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、TypeScript 和 Rust 构建。支持多会话文件管理、可靠传输、交互终端及文档与归档预览，无需云账号。
 
 当前为内部试用版，应用版本为 `0.1.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
@@ -122,7 +125,7 @@ npm run release:windows -- -Offline
 
 脚本先复用完整检查，再构建 Windows NSIS 安装包并生成 SHA256 文件；检查失败不开始打包，不自动安装或发布。输出目录为 `src-tauri/target/release/bundle/nsis/`。离线参数只限制 Cargo，首次准备 NSIS/WebView2 工具仍可能需要网络。
 
-CI 配置位于 `.github/workflows/checks.yml`：推送、Pull Request 或手动触发时，在 Windows runner 准备依赖并调用同一完整检查入口。只使用本机随机端口的 SSH fixture，不需要私人服务器、签名或发布密钥；该工作流不生成或发布安装包。配置落盘不代表 GitHub 托管运行已通过。
+CI 配置位于 `.github/workflows/checks.yml`：推送、Pull Request 或手动触发时，在 Windows runner 准备依赖并调用同一完整检查入口。只使用本机随机端口的 SSH fixture，不需要私人服务器、签名或发布密钥；该工作流不生成或发布安装包。[Windows 托管检查已有通过记录](https://github.com/celerxy/termrill/actions/runs/39982783850)，最新提交状态见页首徽章和 [Actions](https://github.com/celerxy/termrill/actions/workflows/checks.yml)。
 
 多平台测试包入口为 `.github/workflows/installers.yml`：在 GitHub 的 Actions 中选择 **Test installers → Run workflow**。它先复用完整 Windows 检查，再分别构建 Windows x64、macOS Apple Silicon/Intel 和 Linux x64 安装包，每个平台执行版本、格式、前端测试与 Rust 检查。成功任务的 **Artifacts** 提供安装包和 SHA256，保留 14 天；不创建 Release、不签署开发者证书、不自动安装。工作流须先推送到仓库默认分支才能显示手动入口，普通构建无需配置 Secrets。各平台安装方法和验收限制见 [发布说明](docs/RELEASE.md)。
 
@@ -140,4 +143,10 @@ CI 配置位于 `.github/workflows/checks.yml`：推送、Pull Request 或手动
 | [打包与安装说明](docs/RELEASE.md)         | 本地/Actions 打包与安装验收步骤   |
 | [第三方许可](docs/THIRD_PARTY_NOTICES.md) | 已整理的 RAR/7Z 第三方许可文本    |
 
-开源发布准备尚未完成：项目根目录还没有 `LICENSE`，贡献说明和安全反馈入口需后续补齐；CI 已配置，GitHub 托管运行仍待验证。
+## 贡献与反馈
+
+使用问题和功能建议请提交 [Issue](https://github.com/celerxy/termrill/issues)。参与开发前请阅读 [贡献指南](CONTRIBUTING.md) 和 [开发规范](AGENTS.md)。安全漏洞请按 [安全反馈说明](SECURITY.md) 联系维护者，不要在公开 Issue 中附带漏洞利用细节或凭据。
+
+## 许可证
+
+本项目代码采用 [MIT License](LICENSE)。第三方依赖仍适用各自的许可证，已整理的说明见 [第三方许可](docs/THIRD_PARTY_NOTICES.md)。
