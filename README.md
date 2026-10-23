@@ -4,6 +4,26 @@ TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、
 
 当前为内部试用版，应用版本为 `0.1.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
 
+## 界面预览
+
+以下展示图直接使用当前产品组件渲染，连接、目录、终端输出和任务进度均为虚构演示数据，不代表真实服务器连接或性能测试。截图入口及复现步骤见 [展示图说明](docs/SCREENSHOTS.md)。
+
+**双栏文件管理与传输队列**
+
+![TermRill 双栏文件管理与可暂停传输队列](docs/screenshots/workspace.jpg)
+
+**多标签与分屏 SSH 终端**
+
+![TermRill 分屏 SSH 终端](docs/screenshots/terminal.jpg)
+
+**Markdown 文档与源代码预览**
+
+![TermRill Markdown 文档预览](docs/screenshots/preview.jpg)
+
+**标准 SSH 跳板连接配置**
+
+![TermRill SSH Agent 与标准跳板连接配置](docs/screenshots/connection.jpg)
+
 ## 主要能力
 
 - SSH 直连、标准跳板、主机指纹确认、密码/私钥/Agent/交互认证，以及用户主动选择的系统凭据保存。

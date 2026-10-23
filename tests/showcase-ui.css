@@ -1,0 +1,87 @@
+/* 展示框只修饰截图外部，不改变生产组件布局和功能。 */
+body {
+  background: #f1f0f8;
+}
+.showcase-stage {
+  width: min(1600px, 100vw);
+  margin: 0 auto;
+  padding: 32px 40px 20px;
+  background: radial-gradient(ellipse at 95% 0, #e1dcff 0, transparent 48%), #f1f0f8;
+}
+.showcase-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 24px;
+}
+.showcase-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7666ad;
+  letter-spacing: 2px;
+}
+.showcase-caption h1 {
+  font-size: 34px;
+  letter-spacing: -1.2px;
+  color: #28223f;
+  margin: 10px 0 8px;
+  font-weight: 650;
+}
+.showcase-caption p {
+  color: #787389;
+  font-size: 14px;
+  margin: 0;
+}
+.showcase-number {
+  font-size: 70px;
+  line-height: 1;
+  font-weight: 300;
+  color: #c8bfdf;
+}
+.showcase-window {
+  border: 1px solid #dedbe9;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px #3e306818;
+  overflow: hidden;
+  background: white;
+}
+.showcase-titlebar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #faf9fd;
+  border-bottom: 1px solid #e8e6ee;
+  color: #8a8498;
+  font-size: 11px;
+}
+.showcase-lights {
+  display: flex;
+  gap: 6px;
+}
+.showcase-lights i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d7d1e4;
+}
+.showcase-demo {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #988aaf;
+}
+.showcase-app {
+  display: block;
+  width: 100%;
+  height: 760px;
+  border: 0;
+}
+.showcase-footnote {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 8px 0;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #8d849e;
+}
