@@ -6,6 +6,9 @@ use crate::{
 };
 use std::{collections::HashSet, path::PathBuf, sync::Mutex};
 
+#[path = "transfer_benchmark.rs"]
+mod benchmark;
+
 #[test]
 #[ignore = "Requires loopback fixture"]
 fn archive_source_lease_stripes_and_preserves_browser_after_cancel() {

@@ -5,7 +5,7 @@
 
 TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、TypeScript 和 Rust 构建。支持多会话文件管理、可靠传输、交互终端及文档与归档预览，无需云账号。
 
-当前为内部试用版，应用版本为 `0.3.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
+当前为内部试用版，应用版本为 `0.4.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
 
 ## 界面预览
 
@@ -90,6 +90,8 @@ npm test
 ```
 
 完整检查统一使用 `npm run check`，依次执行 npm/Tauri/Cargo 应用版本一致性、格式、全部前端逻辑测试、前端构建、Rust check、Clippy 和本机 SSH 回归，任一步失败即停止。先准备下文 Python 环境和 Rust 依赖缓存；首次可运行 `cargo fetch --locked --manifest-path src-tauri/Cargo.toml`，后续检查使用锁文件与离线模式，不自动改写依赖。
+
+下载性能对照可运行 `npm run benchmark:transfer -- -Python tests/.runtime-fixture-py312/Scripts/python.exe`。工具只使用本机 fixture，对比生产下载与 OpenSSH SFTP，逐次校验 SHA256；使用方法与测量边界见 [下载性能对照](docs/TRANSFER_BENCHMARK.md)。
 
 只检查版本可运行 `npm run check:versions`。需要指定 Python 时运行 `npm run check -- -Python tests/.runtime-fixture-py312/Scripts/python.exe`。修改前阅读 [AGENTS.md](AGENTS.md)，统一格式使用 `npm run format`。
 

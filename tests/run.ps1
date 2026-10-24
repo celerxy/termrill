@@ -1,11 +1,14 @@
-﻿param([string]$Filter = '', [string]$Python = '')
+﻿param([string]$Filter = '', [string]$Python = '', [string]$RuntimeRoot = '')
 $ErrorActionPreference = 'Stop'
 $termrillProject = Split-Path -Parent $PSScriptRoot
 $termrillPython = if ($Python) { (Resolve-Path -LiteralPath $Python).Path } else { Join-Path $PSScriptRoot '.venv/Scripts/python.exe' }
 if (-not (Test-Path -LiteralPath $termrillPython)) {
     throw '请先运行 python -m venv tests/.venv，并安装 tests/requirements.txt。'
 }
-$termrillRuntime = Join-Path $PSScriptRoot ('.runtime-' + [guid]::NewGuid().ToString('N'))
+& $termrillPython -m unittest discover -s (Join-Path $termrillProject 'tests') -p test_transfer_benchmark.py
+if ($LASTEXITCODE -ne 0) { throw '下载对照工具的校验与清理测试失败。' }
+$termrillRuntimeBase = if ($RuntimeRoot) { (Resolve-Path -LiteralPath $RuntimeRoot).Path } else { $PSScriptRoot }
+$termrillRuntime = Join-Path $termrillRuntimeBase ('.runtime-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $termrillRuntime | Out-Null
 $termrillScript = Join-Path $PSScriptRoot 'ssh_fixture.py'
 $termrillFixture = Start-Process -FilePath $termrillPython -ArgumentList @('"' + $termrillScript + '"', '--root', '"' + $termrillRuntime + '"') -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $termrillRuntime 'server.log') -RedirectStandardError (Join-Path $termrillRuntime 'server-error.log')
@@ -36,15 +39,20 @@ try {
     $termrillFixture.WaitForExit()
     # 成功自动清理；失败只保留最新服务日志，不保留大体积测试文件副本。
     $termrillResolvedRuntime = [System.IO.Path]::GetFullPath($termrillRuntime)
-    if ((Split-Path -Parent $termrillResolvedRuntime) -ne $PSScriptRoot -or (Split-Path -Leaf $termrillResolvedRuntime) -notmatch '^\.runtime-[0-9a-f]{32}$') {
+    if ((Split-Path -Parent $termrillResolvedRuntime) -ne $termrillRuntimeBase -or (Split-Path -Leaf $termrillResolvedRuntime) -notmatch '^\.runtime-[0-9a-f]{32}$') {
         throw '测试临时目录超出预期范围，拒绝清理。'
     }
-    if (-not $termrillTestsPassed) {
-        $termrillFailureLogs = Join-Path $PSScriptRoot '.runtime-last-failure'
-        New-Item -ItemType Directory -Path $termrillFailureLogs -Force | Out-Null
-        foreach ($termrillLogName in @('server.log', 'server-error.log')) {
-            Copy-Item -LiteralPath (Join-Path $termrillResolvedRuntime $termrillLogName) -Destination (Join-Path $termrillFailureLogs $termrillLogName) -Force
+    try {
+        if (-not $termrillTestsPassed) {
+            $termrillFailureLogs = Join-Path $PSScriptRoot '.runtime-last-failure'
+            New-Item -ItemType Directory -Path $termrillFailureLogs -Force | Out-Null
+            foreach ($termrillLogName in @('server.log', 'server-error.log')) {
+                Copy-Item -LiteralPath (Join-Path $termrillResolvedRuntime $termrillLogName) -Destination (Join-Path $termrillFailureLogs $termrillLogName) -Force
+            }
         }
+    } catch {
+        Write-Warning '无法保存服务日志；仍清理本次测试数据，不覆盖原始测试失败。'
+    } finally {
+        Remove-Item -LiteralPath $termrillResolvedRuntime -Recurse -Force
     }
-    Remove-Item -LiteralPath $termrillResolvedRuntime -Recurse -Force
 }

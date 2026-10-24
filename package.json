@@ -1,7 +1,7 @@
 {
   "name": "termrill-sftp-client",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "scripts": {
     "test": "node scripts/test-frontend.mjs",
@@ -11,6 +11,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "benchmark:transfer": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/benchmark-transfer.ps1",
     "release:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/release-windows.ps1",
     "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
     "format:check": "prettier --check . && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check"

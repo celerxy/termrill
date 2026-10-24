@@ -414,10 +414,15 @@ if __name__ == '__main__':
     client_key.write_private_key_file(str(key_path))
     target, jump = listener(), listener()
     target_port = target.getsockname()[1]
-    for sock, is_jump in [(target, False), (jump, True)]:
-        threading.Thread(target=serve, args=(sock,paramiko.RSAKey.generate(2048),client_key,remote,target_port,is_jump), daemon=True).start()
-    info = {'targetPort': target_port, 'jumpPort': jump.getsockname()[1], 'keyPath': str(key_path), 'root': str(root)}
-    (root / 'ready.json').write_text(json.dumps(info), encoding='utf8')
+    target_key = paramiko.RSAKey.generate(2048)
+    for sock, host_key, is_jump in [(target, target_key, False), (jump, paramiko.RSAKey.generate(2048), True)]:
+        threading.Thread(target=serve, args=(sock,host_key,client_key,remote,target_port,is_jump), daemon=True).start()
+    # 本机启动器直接提供预期公钥，基线工具据此严格校验；不扫描并静默信任网络公钥。
+    info = {'targetPort': target_port, 'jumpPort': jump.getsockname()[1], 'keyPath': str(key_path), 'root': str(root),
+            'targetHostKey': target_key.get_name() + ' ' + target_key.get_base64()}
+    ready = root / 'ready.tmp'
+    ready.write_text(json.dumps(info), encoding='utf8')
+    ready.replace(root / 'ready.json')
     print('Loopback SSH fixture ready', flush=True)
     while True:
         time.sleep(1)

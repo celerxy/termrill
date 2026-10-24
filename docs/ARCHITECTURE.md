@@ -1,5 +1,11 @@
 # TermRill 架构导读
 
+### 显式回环下载性能入口
+
+`scripts/benchmark-transfer.py` 构建独立测试二进制，启动仅绑定回环地址的 fixture，交替运行生产原生下载与系统 OpenSSH SFTP。`transfer_benchmark.rs` 只作为 `reliability_tests` 子模块编译，普通应用不包含该入口；普通回归没有显式采样变量时不运行性能任务。入口明确调用 `connect_benchmark_native` 和 `execute_native_download`：测试兼容结构的 libssh2 Session 不连接网络，握手和正文均使用当前 russh 实现，不能改用旧测试基线的 execute_concurrent。两客户端都绑定启动器生成的预期公钥，认证前校验指纹；Windows 只收紧本次临时测试密钥 ACL，不修改用户密钥或 SSH 配置。
+
+每次采样都恢复相同的 fixture 读取延迟，避免 Rust fixture 析构清理故障设置后改变下一客户端条件。生产传输、同名保护、临时安装与来源核对均复用现有实现；目标长度及 SHA256 由 Python 在采样计时外逐次检查。输出报告只包含枚举、版本、数字与摘要，失败不导出部分成功；原始进程日志只留在 ignored 本机结果目录。子进程超时关闭本次进程树，退出关闭 fixture，并在验证绝对目录边界后清理密钥和数据。人工场景标签不校验 TUN 状态；工具不接入真实服务器，也不改变生产并发、限速或停收隔离策略。
+
 ### EPUB 只读预览
 
 `fileKind → RemoteDocumentDialog → MediaPreview → EpubPreview` 共用本地、远程及归档内二进制预览入口，保留 32 MiB 上限、读取进度、取消及连接所有权规则。`preview::validate` 对 ZIP 验证 EPUB mimetype；`unpack_epub` 通过 Tauri 二进制请求把已加载字节交给工作线程中的 `epub.rs`，不进行额外网络请求或磁盘解压。最多 4096 项、单项 8 MiB、总展开 64 MiB，声明和实际大小均检查，拒绝加密声明、重复文件、符号链接和不安全路径。返回包内资源的 Base64 映射；IPC 编码、原文件和解码缓冲分别占用内存。

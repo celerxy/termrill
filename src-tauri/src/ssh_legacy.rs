@@ -457,3 +457,37 @@ pub async fn connect_async(request: ConnectRequest, backend: &Backend) -> Result
         .into_inner()
         .map_err(|_| AppError::new("连接锁已损坏"))
 }
+
+/// 仅供显式性能入口：使用生产原生握手，兼容结构中的 libssh2 Session 不连接网络。
+/// 不复用 connect_async 的旧协议基线，否则会把不同实现的建连成本混入测量。
+pub(crate) async fn connect_benchmark_native(
+    request: ConnectRequest,
+    backend: &Backend,
+) -> Result<Connection> {
+    request.profile.target.validate()?;
+    if request.profile.jump.is_some() {
+        return Err(AppError::new("回环性能入口不接受跳板"));
+    }
+    let trusted = lock(&backend.config)?.known_hosts.clone();
+    let host_algorithms = Default::default();
+    let closed = Arc::new(AtomicBool::new(false));
+    let native = crate::transfer::native_async::ssh::Connection::connect(
+        &request,
+        &trusted,
+        &host_algorithms,
+        Some(backend),
+    )
+    .await?;
+    let remote = crate::remote_async::Remote::new(native, closed.clone());
+    Ok(Connection {
+        remote_async: Arc::new(tokio::sync::Mutex::new(Some(remote))),
+        session: Session::new()?,
+        host_algorithms,
+        directory_sftp: None,
+        file_sftp: None,
+        request,
+        closed,
+        first_listing: Arc::new(tokio::sync::Notify::new()),
+        _tunnel: None,
+    })
+}
