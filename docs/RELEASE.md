@@ -1,6 +1,6 @@
 # 打包与安装说明
 
-当前产品与应用标识为 TermRill / `dev.termrill.sftpclient`，版本为 `0.1.0`。最新源码尚未完成安装包验收；历史打包成功记录不代表当前包可交付。验证状态见 [验收记录](READINESS.md)。
+当前产品与应用标识为 TermRill / `dev.termrill.sftpclient`，版本为 `0.2.0`。最新源码尚未完成安装包验收；历史打包成功记录不代表当前包可交付。验证状态见 [验收记录](READINESS.md)。
 
 ## 构建
 
@@ -55,7 +55,7 @@ Windows release 构建成功不代表安装、升级和真实网络中断场景�
 
 ## GitHub Actions 多平台测试包
 
-`.github/workflows/installers.yml` 提供手动工作流 **Test installers**，不随每次推送自动打包，也不创建 GitHub Release。提交并推送工作流到默认分支后：
+`.github/workflows/installers.yml` 提供手动工作流 **Test installers**，不随每次推送自动打包。默认只上传 Artifacts；勾选 `publish_release` 后，全部平台通过才创建对应新版本的预发布 Release。提交并推送工作流到默认分支后：
 
 1. 在仓库 **Settings → Actions → General** 确认允许运行 GitHub Actions 及配置中使用的官方 Actions。
 2. 打开 **Actions → Test installers → Run workflow**，选择要构建的分支。
@@ -77,4 +77,8 @@ Artifacts 外层 ZIP 先解压再安装。每个包附带 `.sha256`：Windows �
 
 2026-10-24，[托管构建 `40043928487`](https://github.com/celerxy/termrill/actions/runs/40043928487) 已生成并上传基于 `478894f` 的 Windows x64 测试包，可在运行页面的 Artifacts 下载。该测试包不包含 EPUB 阅读器；Windows 安装、卸载和升级仍需实机验收。macOS Intel 依赖下载超时，macOS ARM 的收集入口测试失败，Linux 的 Clippy 检查失败，因此整次运行显示失败。
 
-收集脚本通过真实路径比较兼容 macOS 路径别名；可变声明只用于 Windows 分支。锁文件下载地址统一为 npm 官方源，版本与完整性校验值保持不变；安装包工作流对 npm 下载设置有界重试与超时，不忽略失败。这些修复已通过本机检查，其余三个平台的打包结果以 [后续托管运行](https://github.com/celerxy/termrill/actions/workflows/installers.yml) 为准；安装包产物与 GitHub Release 分别管理，构建通过不代表四平台安装验收完成。
+收集脚本通过真实路径比较兼容 macOS 路径别名；可变声明只用于 Windows 分支。锁文件下载地址统一为 npm 官方源，版本与完整性校验值保持不变；安装包工作流对 npm 下载设置有界重试与超时，不忽略失败。这些修复已通过本机检查和 [四平台托管构建](https://github.com/celerxy/termrill/actions/runs/40048404019)，对应源码已发布 `v0.1.0` 预发布；安装包产物与 GitHub Release 分别管理，构建通过不代表四平台安装验收完成。
+
+## 新版本发布
+
+先同步 package.json、package-lock.json、Cargo.toml、Cargo.lock 与 Tauri 的版本，并为该版本新增 `docs/releases/v版本.md`。推送源码后手动运行 Test installers 并勾选 `publish_release`。发行任务只接受当前提交的四平台完整产物，验证 ZIP 摘要与五个安装包的校验文件，再上传十个附件到草稿；逐项核对上传摘要后才公开预发布。同版本已公开内容不允许覆盖，重试只复用同一提交和说明的草稿附件。

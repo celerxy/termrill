@@ -2,6 +2,11 @@ name: Test installers
 
 on:
   workflow_dispatch:
+    inputs:
+      publish_release:
+        description: Publish the checked version as a new preview Release
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -95,6 +100,7 @@ jobs:
           key: installers-${{ matrix.name }}-${{ steps.rust.outputs.version }}-${{ hashFiles('src-tauri/Cargo.lock', 'src-tauri/Cargo.toml') }}-${{ github.sha }}
           restore-keys: |
             installers-${{ matrix.name }}-${{ steps.rust.outputs.version }}-${{ hashFiles('src-tauri/Cargo.lock', 'src-tauri/Cargo.toml') }}-
+            installers-${{ matrix.name }}-${{ steps.rust.outputs.version }}-
       - name: Install dependencies
         run: |
           npm ci
@@ -142,3 +148,23 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 0
+
+  publish:
+    name: Publish preview Release
+    needs: [checks, package]
+    if: inputs.publish_release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Test artifact validation
+        run: python3 -m unittest discover -s tests -p test_release_publish.py
+      - name: Verify assets and publish new preview
+        run: python3 scripts/publish-release.py
+        env:
+          GH_TOKEN: ${{ github.token }}

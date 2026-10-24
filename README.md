@@ -5,7 +5,7 @@
 
 TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、TypeScript 和 Rust 构建。支持多会话文件管理、可靠传输、交互终端及文档与归档预览，无需云账号。
 
-当前为内部试用版，应用版本为 `0.1.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
+当前为内部试用版，应用版本为 `0.2.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
 
 ## 界面预览
 
@@ -127,9 +127,9 @@ npm run release:windows -- -Offline
 
 CI 配置位于 `.github/workflows/checks.yml`：推送、Pull Request 或手动触发时，在 Windows runner 准备依赖并调用同一完整检查入口。只使用本机随机端口的 SSH fixture，不需要私人服务器、签名或发布密钥；该工作流不生成或发布安装包。[Windows 托管检查已有通过记录](https://github.com/celerxy/termrill/actions/runs/39982783850)，最新提交状态见页首徽章和 [Actions](https://github.com/celerxy/termrill/actions/workflows/checks.yml)。
 
-多平台测试包入口为 `.github/workflows/installers.yml`：在 GitHub 的 Actions 中选择 **Test installers → Run workflow**。它先复用完整 Windows 检查，再分别构建 Windows x64、macOS Apple Silicon/Intel 和 Linux x64 安装包，每个平台执行版本、格式、前端测试与 Rust 检查。成功任务的 **Artifacts** 提供安装包和 SHA256，保留 14 天；不创建 Release、不签署开发者证书、不自动安装。工作流须先推送到仓库默认分支才能显示手动入口，普通构建无需配置 Secrets。各平台安装方法和验收限制见 [发布说明](docs/RELEASE.md)。
+多平台测试包入口为 `.github/workflows/installers.yml`：在 GitHub 的 Actions 中选择 **Test installers → Run workflow**。它先复用完整 Windows 检查，再分别构建 Windows x64、macOS Apple Silicon/Intel 和 Linux x64 安装包，每个平台执行版本、格式、前端测试和 Rust 检查。默认只把安装包和 SHA256 上传到保留 14 天的 Artifacts；勾选 `publish_release` 后，全部平台成功且附件校验通过才发布新版本预发布 Release。macOS 使用免费 ad-hoc 签名，不等于 Developer ID 签名或公证；普通构建和预发布不需要配置 Secrets。
 
-已有基于公开提交 `8ecf610` 的 [v0.1.0 预发布安装包](https://github.com/celerxy/termrill/releases/tag/v0.1.0)，四个平台托管构建通过；该版本尚未包含新增 EPUB 阅读器和 macOS ad-hoc 签名改进。源码现已支持这两项能力，新的安装包仍需重新构建及实机验证。安装、卸载与升级验收尚未完成，详细状态与步骤见 [打包与安装说明](docs/RELEASE.md)。
+预发布安装包请前往 [Releases](https://github.com/celerxy/termrill/releases)。`0.2.0` 新增 EPUB 阅读器、Mac 签名改进和 Windows 安装器外观；旧版 `0.1.0` 不包含这些改进。安装、卸载与升级仍需实机验收，详细状态与步骤见 [打包与安装说明](docs/RELEASE.md)。
 
 ## 文档导航
 
