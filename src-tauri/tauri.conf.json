@@ -37,8 +37,14 @@
       "icons/icon.ico"
     ],
     "shortDescription": "TermRill SSH and SFTP desktop client",
+    "copyright": "Copyright (c) 2026 celerxy",
     "windows": {
       "nsis": {
+        "headerImage": "installer/header.bmp",
+        "sidebarImage": "installer/sidebar.bmp",
+        "installerIcon": "icons/icon.ico",
+        "uninstallerIcon": "icons/icon.ico",
+        "installerHooks": "installer/branding.nsh",
         "installMode": "currentUser",
         "displayLanguageSelector": true,
         "languages": ["SimpChinese", "English"]

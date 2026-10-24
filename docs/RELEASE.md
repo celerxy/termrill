@@ -18,6 +18,18 @@ Get-FileHash -LiteralPath '安装包的完整路径.exe' -Algorithm SHA256
 
 本机完整检查使用锁文件及离线 Cargo，需先按 README 准备 Python fixture 和依赖缓存。可先运行 `cargo fetch --locked --manifest-path src-tauri/Cargo.toml`；指定 Python 使用 `npm run release:windows -- -Python tests/.runtime-fixture-py312/Scripts/python.exe`，可与 `-Offline` 组合。`./scripts/check-release.ps1 -Package` 保留为离线打包别名，委托发行脚本，完整检查只执行一次。
 
+## Windows 安装器外观
+
+NSIS 沿用 Tauri 默认的安装、覆盖升级、WebView2 准备与卸载流程，仅通过 `src-tauri/installer/branding.nsh` 设置中英文欢迎文案和字体。中文使用 Microsoft YaHei UI，英文使用 Segoe UI，默认字号为 10pt；安装与卸载图标复用应用图标。安装模式仍为当前用户，语言选择保持简体中文与英文。
+
+侧图 `sidebar.bmp` 为 328×628，页眉 `header.bmp` 为 300×114，均为 24 位 RGB BMP，按 NSIS 推荐比例提供双倍分辨率素材。图形沿用 `src/assets/termrill.svg` 的品牌标志；不分发系统字体。素材已纳入仓库，正常构建和 CI 不需要图形生成依赖。需要重新生成时，在装有 Pillow 的 Python 环境运行：
+
+```powershell
+python scripts/generate-installer-artwork.py --font "$env:WINDIR/Fonts/segoeuib.ttf"
+```
+
+已使用现有调试二进制执行 `tauri bundle --debug --bundles nsis --ci --no-sign`，生成安装包并检查实际欢迎页与维护页外观；未执行安装、覆盖升级或卸载。这是外观验证，不代表当前源码已完成发行构建与安装验收，也不会替换已发布版本。
+
 ## macOS 免费签名
 
 `src-tauri/tauri.macos.conf.json` 使用 Tauri 官方支持的 `signingIdentity: "-"`。macOS 本机与 Actions 构建会在生成 DMG 前对应用进行 ad-hoc 签名，不需要 Apple 开发者账户、证书或 Secrets，也不改变应用标识、网络权限或系统安全设置。
