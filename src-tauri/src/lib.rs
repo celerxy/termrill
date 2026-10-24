@@ -11,6 +11,7 @@ mod directory;
 mod directory_sync;
 mod directory_sync_options;
 mod directory_sync_rules;
+mod epub;
 mod files;
 #[cfg(all(test, windows))]
 mod kvm_read_perf;
@@ -928,6 +929,19 @@ fn begin_preview() -> Result<String> {
     preview::begin()
 }
 #[tauri::command]
+async fn unpack_epub(
+    request: tauri::ipc::Request<'_>,
+) -> Result<std::collections::BTreeMap<String, String>> {
+    let tauri::ipc::InvokeBody::Raw(bytes) = request.body() else {
+        return Err(AppError::new("EPUB 需要二进制请求"));
+    };
+    if bytes.len() > 32 * 1024 * 1024 {
+        return Err(AppError::new("EPUB 超过 32 MiB"));
+    }
+    let bytes = bytes.clone();
+    blocking(move || epub::unpack(&bytes)).await
+}
+#[tauri::command]
 fn cancel_preview(request: String) -> Result<()> {
     preview::cancel(&request)
 }
@@ -1478,6 +1492,7 @@ pub fn run() {
             read_local_preview,
             open_remote_text,
             begin_preview,
+            unpack_epub,
             cancel_preview,
             read_remote_preview,
             save_remote_text,

@@ -38,7 +38,7 @@ export default function RemoteDocumentDialog({
   textComplete = true,
 }: {
   document: RemoteDocument;
-  kind: 'text' | 'image' | 'pdf';
+  kind: 'text' | 'image' | 'pdf' | 'epub';
   busy: boolean;
   error: string;
   onChange: (content: string) => void;

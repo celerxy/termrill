@@ -1,4 +1,4 @@
-//! 有界只读预览：请求独立取消，读取后校验类型签名，不接受 SVG 等主动内容。
+//! 有界只读预览：请求独立取消，读取后校验类型签名，EPUB 资源仍须单独清洗。
 use crate::model::*;
 use std::{
     collections::BTreeMap,
@@ -89,9 +89,10 @@ pub(crate) fn validate(bytes: &[u8]) -> Result<()> {
             && bytes
                 .get(8..12)
                 .is_some_and(|brand| brand == b"avif" || brand == b"avis"))
-        || (bytes.starts_with(b"RIFF") && bytes.get(8..12) == Some(b"WEBP"));
+        || (bytes.starts_with(b"RIFF") && bytes.get(8..12) == Some(b"WEBP"))
+        || (bytes.starts_with(b"PK\x03\x04") && crate::epub::is_epub(bytes));
     if !valid {
-        return Err(AppError::new("文件内容不是支持的图片或 PDF"));
+        return Err(AppError::new("文件内容不是支持的图片、PDF 或 EPUB"));
     }
     Ok(())
 }

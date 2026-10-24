@@ -5,6 +5,8 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Channel, invoke } from '@tauri-apps/api/core';
 const loadPdfReader = () => import('./PdfPreview');
 const PdfPreview = lazy(loadPdfReader);
+const loadEpubReader = () => import('./EpubPreview');
+const EpubPreview = lazy(loadEpubReader);
 import { formatSize, message } from './types';
 import { Image as ImageIcon, Minus, Plus } from 'lucide-react';
 export default function MediaPreview({
@@ -18,7 +20,7 @@ export default function MediaPreview({
   initialBytes?: ArrayBuffer;
   id: string | null;
   path: string;
-  kind: 'image' | 'pdf';
+  kind: 'image' | 'pdf' | 'epub';
   onStatus: (status: string) => void;
   pdfControlsTarget?: HTMLElement | null;
 }) {
@@ -47,6 +49,7 @@ export default function MediaPreview({
     setRead(0);
     // 网络读取期间并行准备模块，避免完整文件到达后才开始加载阅读器。
     if (kind === 'pdf') void loadPdfReader().catch(() => {});
+    if (kind === 'epub') void loadEpubReader().catch(() => {});
     const progress = new Channel<number>();
     progress.onmessage = (value) => {
       if (!firstByte && value > 0) firstByte = performance.now() - started;
@@ -118,6 +121,13 @@ export default function MediaPreview({
         <PdfPreview bytes={bytes} onStatus={onStatus} controlsTarget={pdfControlsTarget} />
       </Suspense>
     );
+  if (kind === 'epub') {
+    return (
+      <Suspense fallback={<div className="document-empty">正在加载 EPUB 阅读器…</div>}>
+        <EpubPreview bytes={bytes} onStatus={onStatus} />
+      </Suspense>
+    );
+  }
   return (
     <>
       <div className="document-toolbar reader-toolbar">
