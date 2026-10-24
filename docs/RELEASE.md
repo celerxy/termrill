@@ -18,6 +18,14 @@ Get-FileHash -LiteralPath '安装包的完整路径.exe' -Algorithm SHA256
 
 本机完整检查使用锁文件及离线 Cargo，需先按 README 准备 Python fixture 和依赖缓存。可先运行 `cargo fetch --locked --manifest-path src-tauri/Cargo.toml`；指定 Python 使用 `npm run release:windows -- -Python tests/.runtime-fixture-py312/Scripts/python.exe`，可与 `-Offline` 组合。`./scripts/check-release.ps1 -Package` 保留为离线打包别名，委托发行脚本，完整检查只执行一次。
 
+## macOS 免费签名
+
+`src-tauri/tauri.macos.conf.json` 使用 Tauri 官方支持的 `signingIdentity: "-"`。macOS 本机与 Actions 构建会在生成 DMG 前对应用进行 ad-hoc 签名，不需要 Apple 开发者账户、证书或 Secrets，也不改变应用标识、网络权限或系统安全设置。
+
+Actions 在收集产物前执行 `scripts/verify-macos-signature.sh`：对构建目录及只读挂载 DMG 中的 `.app` 分别运行严格签名校验，确认 ad-hoc 类型、应用标识、非空 UUID 和目标架构，并比较主程序完整 SHA256。未签名、签名失效、缺失或错误 UUID、镜像内容不一致都将使任务失败，不上传安装包。校验结束卸载镜像，只删除脚本创建的空目录。
+
+ad-hoc 签名不建立 Apple 认证的开发者身份，也不等于公证；首次打开仍可能需要系统的来源确认，更新后的本地网络权限识别也不保证稳定。它针对当前完全未签名的 Mac 测试包作改进，不能据此声称所有版本 macOS 的连接问题都已修复。正式分发的签名要求见 [Tauri macOS 签名说明](https://v2.tauri.app/distribute/sign/macos/)。本机 Windows 只能验证脚本语法和工作流结构；签名工具、DMG 内容及真实连接需由后续 Mac 构建和实机验证。
+
 ## 安装与升级验收
 
 以下是发布前人工检查清单，不代表已经通过。使用独立 Windows 测试账户及临时 SSH 服务，避免修改日常服务器文件。
@@ -53,7 +61,7 @@ Artifacts 外层 ZIP 先解压再安装。每个包附带 `.sha256`：Windows �
 
 所有打包任务显式传入各平台 bundles，因此不改变本地 `tauri.conf.json` 的 Windows NSIS 默认配置。缓存按平台、架构、工具链和 Cargo 依赖隔离；构建前只清理已验证处于工作区 target 下的 bundle 目录，收集阶段要求每种声明格式都有产物且输出目录未存在，避免上传旧版本或漏格式。安装包仅上传明确的安装格式与校验文件，不上传源码、测试数据或应用配置。
 
-该流程使用 GitHub 自动提供的工作流权限，不需要手动 PAT、SSH 私钥、服务器密码或签名 Secrets。测试包未使用 Windows 开发者签名、Apple Developer 签名或公证，系统可能拦截或提示来源未验证；正式分发需要后续接入签名与各平台实机验收，不关闭系统安全设置来掩盖这些限制。普通使用者无需安装 Node.js、Rust 或 Python，运行环境和系统库要求由相应安装包及系统决定。
+该流程使用 GitHub 自动提供的工作流权限，不需要手动 PAT、SSH 私钥、服务器密码或签名 Secrets。Windows 测试包未使用开发者签名；macOS 源码配置使用免费的 ad-hoc 签名，未使用 Developer ID 签名或公证。系统可能提示来源未验证，正式分发仍需签名与各平台实机验收，不关闭系统安全设置来掩盖这些限制。普通使用者无需安装 Node.js、Rust 或 Python，运行环境和系统库要求由相应安装包及系统决定。
 
 2026-10-24，[托管构建 `40043928487`](https://github.com/celerxy/termrill/actions/runs/40043928487) 已生成并上传基于 `478894f` 的 Windows x64 测试包，可在运行页面的 Artifacts 下载。该测试包不包含 EPUB 阅读器；Windows 安装、卸载和升级仍需实机验收。macOS Intel 依赖下载超时，macOS ARM 的收集入口测试失败，Linux 的 Clippy 检查失败，因此整次运行显示失败。
 

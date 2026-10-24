@@ -129,7 +129,7 @@ CI 配置位于 `.github/workflows/checks.yml`：推送、Pull Request 或手动
 
 多平台测试包入口为 `.github/workflows/installers.yml`：在 GitHub 的 Actions 中选择 **Test installers → Run workflow**。它先复用完整 Windows 检查，再分别构建 Windows x64、macOS Apple Silicon/Intel 和 Linux x64 安装包，每个平台执行版本、格式、前端测试与 Rust 检查。成功任务的 **Artifacts** 提供安装包和 SHA256，保留 14 天；不创建 Release、不签署开发者证书、不自动安装。工作流须先推送到仓库默认分支才能显示手动入口，普通构建无需配置 Secrets。各平台安装方法和验收限制见 [发布说明](docs/RELEASE.md)。
 
-当前 TermRill 安装包尚未重新生成并完成安装、卸载与升级验收。详细步骤见 [打包与安装说明](docs/RELEASE.md)。
+已有基于公开提交 `8ecf610` 的 [v0.1.0 预发布安装包](https://github.com/celerxy/termrill/releases/tag/v0.1.0)，四个平台托管构建通过；该版本尚未包含新增 EPUB 阅读器和 macOS ad-hoc 签名改进。源码现已支持这两项能力，新的安装包仍需重新构建及实机验证。安装、卸载与升级验收尚未完成，详细状态与步骤见 [打包与安装说明](docs/RELEASE.md)。
 
 ## 文档导航
 

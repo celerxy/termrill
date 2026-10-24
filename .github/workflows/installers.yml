@@ -115,7 +115,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Clippy failed.' }
         env:
           BUNDLE_TARGET: ${{ matrix.target }}
-      - name: Build unsigned test installers
+      - name: Build test installers
         run: |
           # target 缓存可能含旧版本安装包，只清理已确认处于当前工作区 target 下的 bundle。
           $targetRoot = [System.IO.Path]::GetFullPath((Join-Path $env:GITHUB_WORKSPACE 'src-tauri/target')) + [System.IO.Path]::DirectorySeparatorChar
@@ -124,6 +124,11 @@ jobs:
           if (Test-Path -LiteralPath $bundleRoot) { Remove-Item -LiteralPath $bundleRoot -Recurse -Force }
           npm run tauri -- build --ci --target $env:BUNDLE_TARGET --bundles $env:BUNDLE_KINDS -- --locked
           if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
+          # macOS 平台配置让 Tauri 在封装 DMG 前签名；必须核验镜像内的真实产物。
+          if ($IsMacOS) {
+            bash scripts/verify-macos-signature.sh $bundleRoot $env:BUNDLE_TARGET
+            if ($LASTEXITCODE -ne 0) { throw 'macOS ad-hoc signature verification failed.' }
+          }
           node scripts/collect-installers.mjs $env:BUNDLE_TARGET $env:BUNDLE_KINDS
           if ($LASTEXITCODE -ne 0) { throw 'Installer collection failed.' }
         env:
