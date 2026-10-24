@@ -1,6 +1,6 @@
 # 打包与安装说明
 
-当前产品与应用标识为 TermRill / `dev.termrill.sftpclient`，版本为 `0.2.0`。最新源码尚未完成安装包验收；历史打包成功记录不代表当前包可交付。验证状态见 [验收记录](READINESS.md)。
+当前产品与应用标识为 TermRill / `dev.termrill.sftpclient`，版本为 `0.2.1`。最新源码尚未完成安装包验收；历史打包成功记录不代表当前包可交付。验证状态见 [验收记录](READINESS.md)。
 
 ## 构建
 
@@ -20,7 +20,7 @@ Get-FileHash -LiteralPath '安装包的完整路径.exe' -Algorithm SHA256
 
 ## Windows 安装器外观
 
-NSIS 沿用 Tauri 默认的安装、覆盖升级、WebView2 准备与卸载流程，仅通过 `src-tauri/installer/branding.nsh` 设置中英文欢迎文案和字体。中文使用 Microsoft YaHei UI，英文使用 Segoe UI，默认字号为 10pt；安装与卸载图标复用应用图标。安装模式仍为当前用户，语言选择保持简体中文与英文。
+NSIS 沿用 Tauri 默认的安装、覆盖升级、WebView2 准备与卸载流程，仅通过 `src-tauri/installer/branding.nsh` 设置中英文欢迎文案和字体。中文使用 Microsoft YaHei UI，英文使用 Segoe UI，默认字号为 10pt；安装与卸载图标复用应用图标，且显式共用品牌页眉。进度页使用紫色进度条，详情列表沿用当前语言的界面字体；默认折叠详情，保留展开排查入口。只有进度条关闭主题绘制，不更改系统主题或按钮。安装模式仍为当前用户，语言选择保持简体中文与英文。
 
 侧图 `sidebar.bmp` 为 328×628，页眉 `header.bmp` 为 300×114，均为 24 位 RGB BMP，按 NSIS 推荐比例提供双倍分辨率素材。图形沿用 `src/assets/termrill.svg` 的品牌标志；不分发系统字体。素材已纳入仓库，正常构建和 CI 不需要图形生成依赖。需要重新生成时，在装有 Pillow 的 Python 环境运行：
 
