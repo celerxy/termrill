@@ -6,6 +6,7 @@ import { getCurrentWebview } from '@tauri-apps/api/webview';
 import { RemoteDirectoryCache } from './remoteDirectoryCache';
 import { recoveryProfileIdentity, TransferRecoveryIntent } from './transferRecovery';
 import { useWorkspaceLayout } from './useWorkspaceLayout';
+import { observeTransfer } from './transferObservation';
 import {
   Profile,
   Listing,
@@ -26,6 +27,7 @@ export const desktop = isTauri();
 /** 扫描包括本地枚举、远程预检及目录准备；恢复页面只能从观察时开始计时。 */
 function withTransferTimers(task: Transfer, previous?: Transfer, restored = false): Transfer {
   const now = performance.now();
+  task = observeTransfer(task, previous, now);
   const retrying = previous !== undefined && finished(previous) && !finished(task);
   const timerStartedAt = retrying ? now : (previous?.timerStartedAt ?? task.timerStartedAt);
   task = {

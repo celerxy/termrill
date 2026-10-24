@@ -28,7 +28,7 @@ test('下载数据连接断开归入连接中断，不再显示为未分类错�
     diagnoseError(
       '下载数据连接已断开，没有可继续读取的连接：服务器长时间无响应，连接已断开（keepalive 超时）',
     ).code,
-    'network',
+    'network_timeout',
   );
 });
 
@@ -46,4 +46,28 @@ test('诊断摘要只带固定阶段，原始错误中的地址和路径不进�
   assert.match(report, /阶段：安装目标文件/);
   assert.equal(report.includes('private.example'), false);
   assert.equal(diagnoseError('远程文件提交失败（private.example/path）：Failure').phase, undefined);
+});
+
+test('连接阶段区分路由、解析、拒绝和超时，不从孤立系统错误码推断平台', () => {
+  for (const [message, code] of [
+    ['No route to host (os error 65)', 'network_route'],
+    ['Network is unreachable (os error 101)', 'network_route'],
+    ['failed to lookup address information: nodename nor servname provided', 'network_dns'],
+    ['不知道这样的主机。 (os error 11001)', 'network_dns'],
+    ['Connection refused (os error 61)', 'network_refused'],
+    ['Connection timed out (os error 60)', 'network_timeout'],
+  ]) {
+    assert.equal(diagnoseError(message, '连接').code, code);
+  }
+  assert.equal(diagnoseError('os error 65').code, 'unknown');
+  assert.match(diagnoseError('No route to host', '连接').advice, /本地网络权限/);
+});
+
+test('SSH 认证拒绝不误报为目录权限，协议协商失败不建议跳过校验', () => {
+  assert.equal(diagnoseError('Permission denied (publickey,password).', '连接').code, 'auth');
+  assert.equal(diagnoseError('Permission denied', '连接').code, 'permission');
+  assert.match(diagnoseError('Permission denied', '连接').advice, /私钥/);
+  assert.match(diagnoseError('Permission denied', '文件编辑').advice, /目标目录/);
+  assert.equal(diagnoseError('no matching key exchange method found').code, 'ssh_negotiation');
+  assert.equal(diagnoseError('No such file or directory').code, 'missing');
 });

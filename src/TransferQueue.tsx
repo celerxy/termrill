@@ -1,5 +1,7 @@
 import SyncTaskReport from './SyncTaskReport';
 import ErrorNotice from './ErrorNotice';
+import TransferDiagnostics from './TransferDiagnostics';
+import { transferHealth } from './transferObservation';
 import { diagnoseError } from './errorDiagnosis';
 import { useEffect, useState } from 'react';
 import type { Workspace } from './useTermRillWorkspace';
@@ -80,6 +82,8 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
             </div>
           )}
           {transfers.map((t) => {
+            const health = transferHealth(t, now);
+            const errorCode = t.error ? diagnoseError(t.error).code : undefined;
             const discarding = discardingTransfers.includes(t.id);
             const retrying = retryingTransfers.includes(t.id);
             const recoveryBusy = discarding || retrying || connecting || !listenersReady;
@@ -99,9 +103,9 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
             if (finalizing) {
               speedLabel = '正在收尾';
             } else if (t.status === 'running') {
-              speedLabel = `${formatSize(t.speed)}/s`;
+              speedLabel = health?.stale ? '等待状态更新' : `${formatSize(t.speed)}/s`;
             }
-            if (t.status === 'running' && !finalizing) {
+            if (t.status === 'running' && !finalizing && !health?.stale && !health?.waiting) {
               if (t.direction === 'upload') {
                 remainingSeconds = t.remainingSeconds ?? undefined;
               } else if (t.speed > 0) {
@@ -235,6 +239,7 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
                     )}
                   </div>
                 </div>
+                <TransferDiagnostics task={t} now={now} />
                 {t.error && !discarding && (
                   <ErrorNotice
                     error={t.error}
@@ -244,7 +249,9 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
                     recovery={
                       t.status === 'failed' &&
                       connectionId &&
-                      ['network', 'auth', 'trust'].includes(diagnoseError(t.error).code)
+                      (errorCode?.startsWith('network') ||
+                        errorCode === 'auth' ||
+                        errorCode === 'trust')
                         ? { label: '重新连接后续传', run: () => reconnectTransfer(t.id) }
                         : undefined
                     }

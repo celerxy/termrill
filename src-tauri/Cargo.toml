@@ -1,6 +1,6 @@
 [package]
 name = "termrill-sftp-client"
-version = "0.2.1"
+version = "0.3.0"
 description = "TermRill desktop SSH and SFTP client"
 edition = "2021"
 

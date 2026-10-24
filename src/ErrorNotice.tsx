@@ -12,7 +12,7 @@ type Props = {
   recovery?: { label: string; run: () => void };
 };
 export default function ErrorNotice({ error, scope, phase = '失败', disabled, recovery }: Props) {
-  const diagnosis = diagnoseError(error);
+  const diagnosis = diagnoseError(error, scope);
   const [report, setReport] = useState('');
   const [copyStatus, setCopyStatus] = useState('');
   useEffect(() => {

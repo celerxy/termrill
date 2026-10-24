@@ -67,6 +67,8 @@ export type Transfer = {
   speed: number;
   remainingSeconds?: number | null;
   error: string | null;
+  /** 仅界面观察的单调时间；不通过 IPC 发送，不写入恢复记录。 */
+  observation?: { eventAt: number; advancedAt: number };
   /** 本次尝试的全程计时，包含排队和暂停；结束后冻结，重试重新开始。 */
   timerStartedAt?: number;
   timerEndedAt?: number;

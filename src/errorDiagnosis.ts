@@ -1,11 +1,18 @@
 /** 分类仅作为恢复建议；没有后端结构化错误码时不能据此改变操作权限。 */
-export function diagnoseError(message: string) {
+export function diagnoseError(message: string, scope?: string) {
   const rules = [
     {
       code: 'installed_cleanup',
       title: '文件已安装，备份清理失败',
       match: /目标文件已安装.*旧备份清理失败/,
       advice: '先刷新并核对目标文件，再处理提示的旧备份；不要直接重复上传或删除备份。',
+    },
+    {
+      code: 'ssh_negotiation',
+      title: 'SSH 协议协商失败',
+      match:
+        /no matching (?:key exchange|host key|cipher|mac)|no common (?:kex|cipher|algorithm)|key exchange failed|密钥交换失败/i,
+      advice: '核对客户端和服务器支持的 SSH 算法及版本。不要通过跳过主机指纹验证解决协商失败。',
     },
     {
       code: 'trust',
@@ -16,7 +23,8 @@ export function diagnoseError(message: string) {
     {
       code: 'auth',
       title: '认证失败',
-      match: /authentication|unauthenticated|认证失败|认证被拒|密码错误|验证码/i,
+      match:
+        /authentication|unauthenticated|permission denied \((?:publickey|password|keyboard-interactive)[^)]*\)|认证失败|认证被拒|密码错误|验证码/i,
       advice: '检查用户名、认证方式和凭据；需要验证码时使用交互式认证。',
     },
     {
@@ -26,10 +34,41 @@ export function diagnoseError(message: string) {
       advice: '检查目标磁盘空间或配额，释放空间或选择其他目录后再重试。',
     },
     {
+      code: 'network_route',
+      title: '目标主机不可达',
+      match: /no route to host|network is unreachable|host is unreachable|主机不可达|网络不可达/i,
+      advice:
+        '连接尚未进入 SSH 认证。检查是否接入目标所在的局域网或 VPN，以及路由、防火墙和 TUN 分流；若同一设备的终端能连接，检查应用的本地网络权限。关闭代理不一定恢复私网路由。',
+    },
+    {
+      code: 'network_dns',
+      title: '主机名解析失败',
+      match:
+        /could not resolve hostname|name or service not known|nodename nor servname|failed to lookup address|temporary failure in name resolution|不知道这样的主机|主机名.*解析失败/i,
+      advice: '核对主机名和 DNS；内部域名可能需要公司网络或 VPN。此错误发生在 SSH 认证之前。',
+    },
+    {
+      code: 'network_refused',
+      title: '连接被拒绝',
+      match: /connection refused|连接被拒绝|目标计算机积极拒绝/i,
+      advice:
+        '核对主机和 SSH 端口，确认服务正在监听；防火墙或中间设备也可能主动拒绝连接。此时无需反复更换密码。',
+    },
+    {
+      code: 'network_timeout',
+      title: '连接或请求超时',
+      match: /timed? out|timeout|超时/i,
+      advice:
+        '核对服务器状态、端口、防火墙及 VPN/TUN 路由。超时不能单独证明密码错误或代理故障；若传输已开始，请保留任务并在核对目标后续传。',
+    },
+    {
       code: 'permission',
       title: '权限不足',
       match: /permission denied|access denied|权限不足|权限拒绝|拒绝访问|没有权限/i,
-      advice: '检查当前账号与目标目录权限；可在属性与权限中查看，或选择可写目录。',
+      advice:
+        scope === '连接'
+          ? '检查私钥文件是否可读及应用网络访问权限；如果 SSH 服务已要求认证，再核对服务器账号权限。仅凭此错误不能判断是文件权限还是网络权限。'
+          : '检查当前账号与目标目录权限；可在属性与权限中查看，或选择可写目录。',
     },
     {
       code: 'conflict',
