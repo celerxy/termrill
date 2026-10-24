@@ -128,7 +128,10 @@ jobs:
           $bundleRoot = [System.IO.Path]::GetFullPath((Join-Path $targetRoot "$env:BUNDLE_TARGET/release/bundle"))
           if (-not $bundleRoot.StartsWith($targetRoot, [System.StringComparison]::Ordinal)) { throw 'Bundle path is outside target directory.' }
           if (Test-Path -LiteralPath $bundleRoot) { Remove-Item -LiteralPath $bundleRoot -Recurse -Force }
-          npm run tauri -- build --ci --target $env:BUNDLE_TARGET --bundles $env:BUNDLE_KINDS -- --locked
+          $buildKinds = $env:BUNDLE_KINDS
+          # 只请求 DMG 时 Tauri 会清理中间 .app；显式保留它以对照校验镜像内的签名。
+          if ($IsMacOS) { $buildKinds = "app,$buildKinds" }
+          npm run tauri -- build --ci --target $env:BUNDLE_TARGET --bundles $buildKinds -- --locked
           if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
           # macOS 平台配置让 Tauri 在封装 DMG 前签名；必须核验镜像内的真实产物。
           if ($IsMacOS) {
