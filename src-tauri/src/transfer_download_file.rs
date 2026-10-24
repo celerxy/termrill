@@ -59,6 +59,15 @@ pub(crate) async fn file(
     if prefix > item.size {
         return Err(AppError::new("续传临时文件大于源文件"));
     }
+    crate::blocking({
+        let parent = temporary
+            .parent()
+            .ok_or_else(|| AppError::new("下载目录无效"))?
+            .to_path_buf();
+        let remaining = item.size - prefix;
+        move || crate::local_space::ensure(&parent, remaining)
+    })
+    .await?;
     let state = Destination::new(file, prefix, HASH_CACHE_BYTES);
     crate::performance_log!(
         "[TermRill transfer] task={} direction=download file_index={} phase=receive_start bytes={} resumed_bytes={}",

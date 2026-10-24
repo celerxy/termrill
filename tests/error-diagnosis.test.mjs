@@ -71,3 +71,20 @@ test('SSH 认证拒绝不误报为目录权限，协议协商失败不建议跳�
   assert.equal(diagnoseError('no matching key exchange method found').code, 'ssh_negotiation');
   assert.equal(diagnoseError('No such file or directory').code, 'missing');
 });
+
+test('存储故障与 EPUB 路径错误提供明确建议，通用 FAILURE 仍不猜原因', () => {
+  for (const text of [
+    'No space left on device (os error 28)',
+    'There is not enough space on the disk. (os error 112)',
+    '本地存储空间不足：尚需 200 字节',
+  ])
+    assert.equal(diagnoseError(text).code, 'space');
+  assert.equal(diagnoseError('Read-only file system').code, 'readonly');
+  assert.equal(
+    diagnoseError('The process cannot access the file because it is being used by another process.')
+      .code,
+    'file_busy',
+  );
+  assert.equal(diagnoseError('EPUB 包含不安全路径或符号链接').code, 'epub_resource');
+  assert.equal(diagnoseError('SSH_FX_FAILURE').code, 'unknown');
+});

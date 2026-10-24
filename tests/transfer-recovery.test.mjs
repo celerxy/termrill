@@ -51,3 +51,13 @@ test('修改配置 ID、主机、认证方式或跳板都不能沿用恢复授�
     assert.equal(intent.take(profile), null);
   }
 });
+
+test('恢复提示区分当前连接重试与重连受阻，不忽略暂停任务', async () => {
+  const { transferRecoveryHint } = await import(
+    `data:text/javascript;base64,${Buffer.from(outputText).toString('base64')}`
+  );
+  assert.match(transferRecoveryHint(false, 1), /先完成或取消/);
+  assert.match(transferRecoveryHint(true, 1), /含暂停任务/);
+  assert.match(transferRecoveryHint(false, 0), /重新认证原服务器/);
+  assert.match(transferRecoveryHint(true, 0), /重新连接后续传/);
+});

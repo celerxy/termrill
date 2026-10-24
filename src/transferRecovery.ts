@@ -1,6 +1,18 @@
 /** 恢复意图只保存在当前工作区内存中，不保存凭据，不跨端点或取消操作继续执行。 */
 import type { Endpoint, Profile } from './types';
 
+/** 只说明现有手动恢复约束，不自动重连或改动其他任务。 */
+export function transferRecoveryHint(connected: boolean, activeTasks: number) {
+  if (activeTasks > 0) {
+    return connected
+      ? '可使用当前连接重试；重新连接会断开会话，请先完成或取消其他任务（含暂停任务）。'
+      : '请先完成或取消其他任务（含暂停任务），再连接原服务器续传。';
+  }
+  return connected
+    ? '重试会核对已有内容；若当前连接已失效，可选择重新连接后续传。'
+    : '点击“连接后续传”重新认证原服务器；已有临时内容会重新核对，不会自动覆盖目标文件。';
+}
+
 function endpointIdentity(endpoint: Endpoint | null) {
   return endpoint
     ? [endpoint.host, endpoint.port, endpoint.username, endpoint.auth, endpoint.keyPath]

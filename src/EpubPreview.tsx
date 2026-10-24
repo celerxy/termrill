@@ -5,6 +5,7 @@ import { BookOpen, ChevronLeft, ChevronRight, List, Minus, Plus } from 'lucide-r
 import { createEpubBook, type EpubBook, type EpubTarget } from './epubBook';
 import ErrorNotice from './ErrorNotice';
 import EpubContents from './EpubContents';
+import { useEpubReadingMemory } from './useEpubReadingMemory';
 import { message } from './types';
 import './epubReader.css';
 
@@ -24,6 +25,17 @@ export default function EpubPreview({
   const [fontSize, setFontSize] = useState(18);
   const [showContents, setShowContents] = useState(true);
   const body = useRef<HTMLDivElement>(null);
+  const readingMemory = useEpubReadingMemory(
+    bytes,
+    book,
+    body,
+    { chapter, fontSize, html },
+    (saved) => {
+      setChapter(saved.chapter);
+      setFontSize(saved.fontSize);
+      setFragment('');
+    },
+  );
   useEffect(() => {
     let disposed = false;
     let loaded: EpubBook | undefined;
@@ -31,6 +43,7 @@ export default function EpubPreview({
     setError('');
     setHtml('');
     setChapter(0);
+    setFontSize(18);
     setFragment('');
     onStatus('正在解析 EPUB…');
     void invoke<Record<string, string>>('unpack_epub', bytes)
@@ -69,6 +82,7 @@ export default function EpubPreview({
     }
   }, [html, fragment, navigation]);
   function navigate(target: Pick<EpubTarget, 'path' | 'fragment'>) {
+    readingMemory.navigationStarted();
     const index = book?.chapters.findIndex((item) => item.path === target.path) ?? -1;
     if (index >= 0) {
       setChapter(index);
@@ -78,9 +92,14 @@ export default function EpubPreview({
   }
   function turnPage(offset: number) {
     if (!book) return;
+    readingMemory.navigationStarted();
     setChapter((current) => Math.max(0, Math.min(book.chapters.length - 1, current + offset)));
     setFragment('');
     setNavigation((value) => value + 1);
+  }
+  function changeFontSize(offset: number) {
+    readingMemory.navigationStarted();
+    setFontSize((value) => Math.max(14, Math.min(32, value + offset)));
   }
   if (!book) {
     if (error) return <ErrorNotice error={error} scope="文件预览" />;
@@ -114,7 +133,7 @@ export default function EpubPreview({
         <button
           aria-label="缩小 EPUB 字号"
           disabled={fontSize <= 14}
-          onClick={() => setFontSize((value) => value - 2)}
+          onClick={() => changeFontSize(-2)}
         >
           <Minus size={16} />
         </button>
@@ -122,7 +141,7 @@ export default function EpubPreview({
         <button
           aria-label="放大 EPUB 字号"
           disabled={fontSize >= 32}
-          onClick={() => setFontSize((value) => value + 2)}
+          onClick={() => changeFontSize(2)}
         >
           <Plus size={16} />
         </button>
@@ -135,6 +154,11 @@ export default function EpubPreview({
           <ChevronRight size={16} />
         </button>
       </div>
+      {readingMemory.notice && (
+        <div className="epub-memory-notice" role="status">
+          {readingMemory.notice}
+        </div>
+      )}
       <div className="epub-layout">
         <EpubContents
           contents={book.contents}
@@ -145,6 +169,11 @@ export default function EpubPreview({
         <div
           className="epub-page"
           ref={body}
+          tabIndex={0}
+          onWheelCapture={readingMemory.navigationStarted}
+          onPointerDownCapture={readingMemory.navigationStarted}
+          onTouchStartCapture={readingMemory.navigationStarted}
+          onKeyDownCapture={readingMemory.navigationStarted}
           style={{ fontSize }}
           onClick={(event) => {
             const anchor = (event.target as Element).closest('a');

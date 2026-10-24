@@ -3,6 +3,7 @@ import ErrorNotice from './ErrorNotice';
 import TransferDiagnostics from './TransferDiagnostics';
 import { transferHealth } from './transferObservation';
 import { diagnoseError } from './errorDiagnosis';
+import { transferRecoveryHint } from './transferRecovery';
 import { useEffect, useState } from 'react';
 import type { Workspace } from './useTermRillWorkspace';
 import {
@@ -87,6 +88,7 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
             const discarding = discardingTransfers.includes(t.id);
             const retrying = retryingTransfers.includes(t.id);
             const recoveryBusy = discarding || retrying || connecting || !listenersReady;
+            const retryBlocked = recoveryBusy || (!connectionId && running > 0);
             const finalizing = t.status === 'running' && t.total > 0 && t.bytes >= t.total;
             const roundedEqual =
               t.status === 'running' &&
@@ -216,7 +218,7 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
                     )}
                     {t.status === 'failed' && (
                       <>
-                        <button disabled={recoveryBusy} onClick={() => void retryTransfer(t.id)}>
+                        <button disabled={retryBlocked} onClick={() => void retryTransfer(t.id)}>
                           <RotateCcw size={14} />
                           {retrying ? '正在恢复…' : connectionId ? '重试/续传' : '连接后续传'}
                         </button>
@@ -240,6 +242,11 @@ export default function TransferQueue({ workspace }: { workspace: Workspace }) {
                   </div>
                 </div>
                 <TransferDiagnostics task={t} now={now} />
+                {t.status === 'failed' && !discarding && (
+                  <div className="transfer-detail" role="status">
+                    {transferRecoveryHint(Boolean(connectionId), running)}
+                  </div>
+                )}
                 {t.error && !discarding && (
                   <ErrorNotice
                     error={t.error}

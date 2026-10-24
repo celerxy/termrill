@@ -30,8 +30,31 @@ export function diagnoseError(message: string, scope?: string) {
     {
       code: 'space',
       title: '存储空间不足',
-      match: /no space|disk full|quota exceeded|空间不足|磁盘已满|配额/i,
+      match:
+        /no space|disk full|quota exceeded|not enough space on the disk|空间不足|磁盘已满|配额/i,
       advice: '检查目标磁盘空间或配额，释放空间或选择其他目录后再重试。',
+    },
+    {
+      code: 'readonly',
+      title: '目标存储为只读',
+      match: /read.only file system|write.protected|写保护|写入保护|只读文件系统/i,
+      advice:
+        '选择可写目录，或检查磁盘挂载及写保护状态；保留原文件和续传临时文件，不要反复重传正文。',
+    },
+    {
+      code: 'file_busy',
+      title: '文件正在被占用',
+      match:
+        /sharing violation|being used by another process|resource busy|另一个程序正在使用|另一进程使用|文件.*占用/i,
+      advice:
+        '关闭占用目标文件的编辑器或预览程序，再核对目标和临时文件状态后重试；不要删除尚未确认的备份。',
+    },
+    {
+      code: 'epub_resource',
+      title: 'EPUB 资源校验未通过',
+      match: /EPUB.*(?:不安全路径|符号链接|包外|资源重名|加密)/i,
+      advice:
+        '此书包含无法安全预览的资源路径或加密内容。可用可信阅读器核对，或重新导出为标准 EPUB；应用不会跳过路径校验。',
     },
     {
       code: 'network_route',
@@ -92,7 +115,8 @@ export function diagnoseError(message: string, scope?: string) {
     {
       code: 'format',
       title: '格式不支持或内容无法解析',
-      match: /unsupported|decode|parse|invalid json|不支持|解码|解析|格式错误|损坏/i,
+      match:
+        /unsupported|decode|parse|invalid json|不支持|解码|解析|格式错误|损坏|EPUB.*(?:缺少|无效|超限)/i,
       advice: '核对文件格式和内容，可下载后使用相应工具打开；不要直接覆盖原文件。',
     },
     {

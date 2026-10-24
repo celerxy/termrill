@@ -1,6 +1,6 @@
 [package]
 name = "termrill-sftp-client"
-version = "0.4.0"
+version = "0.5.0"
 description = "TermRill desktop SSH and SFTP client"
 edition = "2021"
 
@@ -38,6 +38,9 @@ windows-sys = { version = "0.61", features = ["Win32_Security_Credentials", "Win
 
 [target.'cfg(target_os = "macos")'.dependencies]
 keyring = { version = "3.6.3", features = ["apple-native"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 keyring = { version = "3.6.3", features = ["sync-secret-service", "crypto-rust"] }

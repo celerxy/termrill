@@ -5,7 +5,7 @@
 
 TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、TypeScript 和 Rust 构建。支持多会话文件管理、可靠传输、交互终端及文档与归档预览，无需云账号。
 
-当前为内部试用版，应用版本为 `0.4.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
+当前为内部试用版，应用版本为 `0.5.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
 
 ## 界面预览
 
@@ -34,7 +34,7 @@ TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、
 - 文件与目录上传下载、暂停、取消、失败重试、续传、并发及限速；覆盖前确认，失败保留旧目标或报告回滚备份。
 - 连接错误分类与针对性排查建议、传输进度停顿观察和可预览复制的数值诊断快照。
 - 多标签和分屏终端、终端搜索及有界日志持续查看。
-- 多编码文本编辑、Markdown/Mermaid、Notebook、CSV/TSV、图片及 PDF、EPUB 阅读器。
+- 多编码文本编辑、Markdown/Mermaid、Notebook、CSV/TSV、图片及 PDF、EPUB 阅读器（含本机阅读进度记忆）。
 - ZIP、TAR 系列、7Z 读写与密码能力；RAR 和单文件压缩流只读。
 - 单向目录差异同步、规则与排除项、快速/严格比较、文本差异和任务报告。
 - Linux 服务器状态、连接分组、非敏感配置导入导出和确认后执行的常用命令。
@@ -45,7 +45,7 @@ TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、
 
 当前说明以 Windows PowerShell 为例。在本仓库根目录运行，目录本身可以使用任意名称。
 
-准备 Node.js/npm、Rust MSVC 工具链、Visual Studio C++ Build Tools 和 WebView2。测试依赖中的静态 OpenSSL 首次编译还需要 Windows 原生 Perl，例如 Strawberry Perl；运行应用不需要 Perl 或 OpenSSL DLL。macOS/Linux 的构建与发行尚未独立验收。
+准备 Node.js/npm、Rust MSVC 工具链、Visual Studio C++ Build Tools 和 WebView2。测试依赖中的静态 OpenSSL 首次编译还需要 Windows 原生 Perl，例如 Strawberry Perl；运行应用不需要 Perl 或 OpenSSL DLL。macOS/Linux 已有托管打包通过记录，运行与安装升级仍需对应平台实机验收。
 
 ```powershell
 npm install

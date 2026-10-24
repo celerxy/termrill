@@ -17,6 +17,7 @@ mod files;
 mod kvm_read_perf;
 mod links;
 mod local_files;
+mod local_space;
 mod log_follow;
 mod model;
 mod performance;

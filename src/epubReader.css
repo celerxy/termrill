@@ -176,6 +176,12 @@
   object-fit: contain;
   margin: 1em auto;
 }
+.epub-memory-notice {
+  padding: 6px 16px;
+  color: #785817;
+  background: #fff8e8;
+  font-size: 13px;
+}
 .epub-prose a[href] {
   color: #6245d6;
   text-decoration: underline;
