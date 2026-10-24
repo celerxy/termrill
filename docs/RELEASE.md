@@ -55,4 +55,6 @@ Artifacts 外层 ZIP 先解压再安装。每个包附带 `.sha256`：Windows �
 
 该流程使用 GitHub 自动提供的工作流权限，不需要手动 PAT、SSH 私钥、服务器密码或签名 Secrets。测试包未使用 Windows 开发者签名、Apple Developer 签名或公证，系统可能拦截或提示来源未验证；正式分发需要后续接入签名与各平台实机验收，不关闭系统安全设置来掩盖这些限制。普通使用者无需安装 Node.js、Rust 或 Python，运行环境和系统库要求由相应安装包及系统决定。
 
-当前只完成工作流配置与本地可执行检查，尚未在 GitHub 托管 runner 生成并安装验证四个平台产物，不将配置完成视为跨平台兼容性验收。
+2026-10-24，[托管构建 `40043928487`](https://github.com/celerxy/termrill/actions/runs/40043928487) 已生成并上传基于 `478894f` 的 Windows x64 测试包，可在运行页面的 Artifacts 下载。该测试包不包含 EPUB 阅读器；Windows 安装、卸载和升级仍需实机验收。macOS Intel 依赖下载超时，macOS ARM 的收集入口测试失败，Linux 的 Clippy 检查失败，因此整次运行显示失败。
+
+收集脚本通过真实路径比较兼容 macOS 路径别名；可变声明只用于 Windows 分支。锁文件下载地址统一为 npm 官方源，版本与完整性校验值保持不变；安装包工作流对 npm 下载设置有界重试与超时，不忽略失败。这些修复已通过本机检查，其余三个平台的打包结果以 [后续托管运行](https://github.com/celerxy/termrill/actions/workflows/installers.yml) 为准；安装包产物与 GitHub Release 分别管理，构建通过不代表四平台安装验收完成。

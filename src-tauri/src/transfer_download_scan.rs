@@ -42,7 +42,10 @@ pub(super) async fn scan(remote: &Remote, job: &Job, cancel: &AtomicBool) -> Res
                 if !stat.is_file() && !stat.is_dir() && !symlink {
                     return Err(AppError::new("不支持下载特殊文件"));
                 }
+                #[cfg(windows)]
                 let mut link_directory = false;
+                #[cfg(not(windows))]
+                let link_directory = false;
                 let link = if symlink {
                     let target = remote
                         .checked(remote.native.sftp.readlink(path.clone()), cancel)

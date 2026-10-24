@@ -1,9 +1,9 @@
 /** 只收集声明格式的安装包并生成校验文件；缺少任一格式时失败，不发布或安装。 */
 import { createHash } from 'node:crypto';
-import { constants, createReadStream } from 'node:fs';
+import { constants, createReadStream, realpathSync } from 'node:fs';
 import { copyFile, mkdir, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 const formats = { nsis: '.exe', dmg: '.dmg', deb: '.deb', appimage: '.AppImage' };
 
@@ -45,7 +45,11 @@ export async function collectInstallers(bundleRoot, outputRoot, kinds) {
   return files.map((file) => file.name);
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+// macOS 的 /var 会解析成 /private/var；模块 URL 和 argv 必须比较同一真实路径。
+if (
+  process.argv[1] &&
+  realpathSync(fileURLToPath(import.meta.url)) === realpathSync(resolve(process.argv[1]))
+) {
   const [target, bundles] = process.argv.slice(2);
   if (!/^[a-z0-9_]+(?:-[a-z0-9_]+)+$/.test(target ?? '')) {
     throw new Error('Rust target 无效');

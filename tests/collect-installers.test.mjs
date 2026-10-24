@@ -10,6 +10,7 @@ import {
   readFile,
   readdir,
   rm,
+  symlink,
   writeFile,
 } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -79,20 +80,28 @@ test('已有输出目录必须报错，不能把旧版本安装包混进本次�
   assert.deepEqual(await readdir(output), ['old.exe']);
 });
 
-test('命令行入口支持 x86_64 Rust target，并从对应 release 目录收集安装包', async (t) => {
-  const root = await fixture(t);
-  const target = 'x86_64-pc-windows-msvc';
-  const bundle = join(root, 'src-tauri/target', target, 'release/bundle/nsis');
-  const scripts = join(root, 'scripts');
-  await mkdir(bundle, { recursive: true });
-  await mkdir(scripts);
-  await writeFile(join(bundle, 'TermRill.exe'), 'fixture installer');
-  const entry = join(scripts, 'collect-installers.mjs');
-  await copyFile(new URL('../scripts/collect-installers.mjs', import.meta.url), entry);
-  const result = spawnSync(process.execPath, [entry, target, 'nsis'], { encoding: 'utf8' });
-  assert.equal(result.status, 0, result.stderr);
-  assert.equal(
-    await readFile(join(root, 'artifacts', target, 'TermRill.exe'), 'utf8'),
-    'fixture installer',
-  );
-});
+for (const aliased of [false, true]) {
+  test(`命令行入口通过${aliased ? '目录别名' : '真实路径'}收集 x86_64 Rust target 安装包`, async (t) => {
+    const root = await fixture(t);
+    const target = 'x86_64-pc-windows-msvc';
+    const bundle = join(root, 'src-tauri/target', target, 'release/bundle/nsis');
+    const scripts = join(root, 'scripts');
+    await mkdir(bundle, { recursive: true });
+    await mkdir(scripts);
+    await writeFile(join(bundle, 'TermRill.exe'), 'fixture installer');
+    const entry = join(scripts, 'collect-installers.mjs');
+    await copyFile(new URL('../scripts/collect-installers.mjs', import.meta.url), entry);
+    let command = entry;
+    if (aliased) {
+      const alias = join(root, 'scripts-alias');
+      await symlink(scripts, alias, process.platform === 'win32' ? 'junction' : 'dir');
+      command = join(alias, 'collect-installers.mjs');
+    }
+    const result = spawnSync(process.execPath, [command, target, 'nsis'], { encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(
+      await readFile(join(root, 'artifacts', target, 'TermRill.exe'), 'utf8'),
+      'fixture installer',
+    );
+  });
+}
