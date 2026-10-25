@@ -5,7 +5,9 @@ import FileContextMenu from './FileContextMenu';
 import { desktop } from './useTermRillWorkspace';
 import { Plus, Monitor, Server, Settings, ShieldCheck, Pencil, Trash2 } from 'lucide-react';
 
-import termrillLogo from './assets/termrill.svg';
+// 生产 CSP 仅允许本地图片 URL；禁止将小 SVG 内联成 data: URL。
+import termrillLogo from './assets/termrill.svg?no-inline';
+import packageInfo from '../package.json';
 import { useWorkspaceTabs } from './WorkspaceTabs';
 
 /** 连接配置列表与连接入口。 */
@@ -60,7 +62,7 @@ export default function ConnectionSidebar({ workspace }: { workspace: Workspace 
       <div className="brand">
         <img src={termrillLogo} alt="" width={29} height={29} />
         <strong>TermRill</strong>
-        <span>0.1</span>
+        <span>{packageInfo.version}</span>
       </div>
       <button
         className="new-connection"
@@ -151,7 +153,7 @@ export default function ConnectionSidebar({ workspace }: { workspace: Workspace 
         </div>
         <button disabled={!desktop} onClick={() => void openSettings()}>
           <Settings size={17} />
-          偏好设置<span>0.1.0</span>
+          偏好设置<span>{packageInfo.version}</span>
         </button>
       </div>
       {context && (

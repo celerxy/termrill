@@ -5,7 +5,7 @@
 
 TermRill 是本地优先的 SSH/SFTP 桌面工作台，使用 Tauri 2、React、TypeScript 和 Rust 构建。支持多会话文件管理、可靠传输、交互终端及文档与归档预览，无需云账号。
 
-当前为内部试用版，应用版本为 `0.5.0`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
+当前为内部试用版，应用版本为 `0.5.1`。Windows 本机检查已通过；最新版安装包、真实服务器组合及 macOS/Linux 仍有待验收项目，见 [当前验证状态](docs/READINESS.md)。路线图版本是需求阶段，不表示已经发布。
 
 ## 界面预览
 
@@ -104,6 +104,8 @@ tests/.venv/Scripts/python.exe -m pip install -r tests/requirements.txt
 ```
 
 也可指定已有环境：`./tests/run.ps1 -Python tests/.runtime-fixture-py312/Scripts/python.exe`。服务只监听本机随机端口，不访问个人服务器。测试结束删除临时数据与密钥；失败时仅在 `tests/.runtime-last-failure/` 保留服务日志。
+
+跨进程强退、续传及移除验收见 [进程恢复验收](docs/PROCESS_RECOVERY.md)，该入口显式启动并结束独立测试进程，只使用本机临时数据。
 
 只执行无需服务的 Rust 单元测试：
 

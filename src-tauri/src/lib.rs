@@ -24,9 +24,13 @@ mod performance;
 mod permissions;
 mod preview;
 #[cfg(test)]
+mod process_recovery_tests;
+#[cfg(test)]
 mod reliability_tests;
 mod remote_async;
 mod remote_delete;
+#[cfg(test)]
+mod server_benchmark_tests;
 mod sftp_packet;
 #[cfg(not(test))]
 mod ssh;
