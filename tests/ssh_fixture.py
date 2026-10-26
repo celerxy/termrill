@@ -182,6 +182,13 @@ class Files(paramiko.SFTPServerInterface):
 
     def posix_rename(self, source, destination):
         try:
+            fault = self.faults().get('posixRenameFailure')
+            if fault:
+                if fault == 'changed':
+                    self.path(destination).write_bytes(b'changed by another writer')
+                if fault == 'denied':
+                    return paramiko.SFTP_PERMISSION_DENIED
+                return paramiko.SFTP_FAILURE
             # 回滚用例模拟不支持原子替换的服务端，验证备份和恢复路径。
             if self.faults().get('renameDestination'):
                 return paramiko.SFTP_OP_UNSUPPORTED
@@ -319,7 +326,8 @@ class Auth(paramiko.ServerInterface):
 
 class AuditedSFTP(paramiko.SFTPServer):
     def _send_server_version(self):
-        if 'maxWriteLen' not in self.server.faults():
+        faults = self.server.faults()
+        if 'maxWriteLen' not in faults and not faults.get('posixRenameFailure'):
             return super()._send_server_version()
         from paramiko.sftp import CMD_INIT, CMD_VERSION
         kind, data = self._read_packet()
@@ -327,8 +335,12 @@ class AuditedSFTP(paramiko.SFTPServer):
             raise paramiko.SFTPError('Expected INIT')
         message = paramiko.Message()
         message.add_int(3)
-        message.add_string('limits@openssh.com')
-        message.add_string('1')
+        if 'maxWriteLen' in faults:
+            message.add_string('limits@openssh.com')
+            message.add_string('1')
+        if faults.get('posixRenameFailure'):
+            message.add_string('posix-rename@openssh.com')
+            message.add_string('1')
         self._send_packet(CMD_VERSION, message)
         return struct.unpack('>I', data[:4])[0]
 

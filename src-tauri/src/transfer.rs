@@ -18,6 +18,9 @@ use std::{
 };
 use tauri::Emitter;
 
+#[path = "transfer_atomic_replace.rs"]
+mod atomic_replace;
+
 #[path = "transfer_async.rs"]
 pub(crate) mod native_async;
 // 上传优化使用独立模块和连接池，不能改变下载共享实现或后台预热。

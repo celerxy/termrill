@@ -2951,3 +2951,67 @@ fn native_upload_matching_permissions_does_not_require_chmod() {
     ));
     assert_eq!(fs::read(target).unwrap(), data);
 }
+
+#[test]
+#[ignore = "Requires loopback fixture"]
+fn native_upload_atomic_failure_fallback_preserves_rollback_and_rejects_changes() {
+    // 小文件走共享连接，大文件走专用上传连接，二者必须使用相同提交规则。
+    for size in [128 * 1024, 4 * 1024 * 1024] {
+        for fault in ["failure", "rollback", "changed", "denied"] {
+            let fixture = Fixture::new();
+            let connection = fixture.connect();
+            let mut job = fixture.job("upload", "atomic-failure.bin");
+            job.overwrite = true;
+            let data = vec![53u8; size];
+            fs::write(&job.local, &data).unwrap();
+            let target = fixture.remote_file("atomic-failure.bin");
+            fs::write(&target, b"original").unwrap();
+            let mut faults = serde_json::json!({"posixRenameFailure":fault});
+            if fault == "rollback" {
+                faults["renameDestination"] = job.remote.clone().into();
+                faults["renameSourceContains"] = job.temporary_name(0).into();
+            }
+            fixture.faults(faults);
+            let event = transfer::execute_concurrent(
+                &job,
+                &AtomicBool::new(false),
+                &connection,
+                &fixture.state,
+                |_| {},
+                |_, _| Ok(()),
+            );
+            if fault == "failure" {
+                completed(&event);
+                assert_eq!(fs::read(&target).unwrap(), data);
+            } else {
+                assert_eq!(event.status, "failed", "{fault}");
+                let error = event.error.unwrap();
+                assert!(
+                    error.contains(match fault {
+                        "rollback" => "安装目标文件",
+                        "changed" => "文件状态已变化",
+                        _ => "原子替换目标文件",
+                    }),
+                    "{error}"
+                );
+                let expected: &[u8] = if fault == "changed" {
+                    b"changed by another writer"
+                } else {
+                    b"original"
+                };
+                assert_eq!(fs::read(&target).unwrap(), expected);
+                assert_eq!(
+                    fs::read(fixture.remote_file(&job.temporary_name(0))).unwrap(),
+                    data
+                );
+            }
+            assert!(!fs::read_dir(fixture.remote_file(""))
+                .unwrap()
+                .any(|entry| entry
+                    .unwrap()
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with(".termrill-backup-")));
+        }
+    }
+}

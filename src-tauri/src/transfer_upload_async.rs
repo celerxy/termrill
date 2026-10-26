@@ -814,28 +814,11 @@ pub(crate) async fn install(
             }
         }
     }
-    if native.posix && item.link.is_none() {
-        let mut packet = Vec::new();
-        crate::sftp_packet::push_string(&mut packet, temporary.as_bytes())?;
-        crate::sftp_packet::push_string(&mut packet, target.as_bytes())?;
-        match sftp.extended("posix-rename@openssh.com", packet).await {
-            Ok(russh_sftp::protocol::Packet::Status(status))
-                if status.status_code == StatusCode::Ok =>
-            {
-                return Ok(())
-            }
-            Ok(russh_sftp::protocol::Packet::Status(status))
-                if status.status_code == StatusCode::OpUnsupported => {}
-            Ok(russh_sftp::protocol::Packet::Status(status)) => {
-                return Err(install_stage_error(
-                    "原子替换目标文件",
-                    SftpError::Status(status),
-                ))
-            }
-            Err(SftpError::Status(status)) if status.status_code == StatusCode::OpUnsupported => {}
-            Err(error) => return Err(install_stage_error("原子替换目标文件", error)),
-            _ => return Err(AppError::new("原子安装响应无效，未重试改名")),
-        }
+    if native.posix
+        && item.link.is_none()
+        && super::atomic_replace::replace(sftp, temporary, target).await?
+    {
+        return Ok(());
     }
     let backup = remote(
         &item
