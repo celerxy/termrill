@@ -1,6 +1,6 @@
 # 打包与安装说明
 
-当前产品与应用标识为 TermRill / `dev.termrill.sftpclient`，版本为 `0.5.2`。最新源码尚未完成安装包验收；历史打包成功记录不代表当前包可交付。验证状态见 [验收记录](READINESS.md)。
+当前产品与应用标识为 TermRill / `dev.termrill.sftpclient`，版本为 `0.5.3`。最新源码尚未完成安装包验收；历史打包成功记录不代表当前包可交付。验证状态见 [验收记录](READINESS.md)。
 
 ## 构建
 

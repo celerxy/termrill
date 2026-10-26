@@ -11,6 +11,7 @@ import {
   Circle,
 } from 'lucide-react';
 import type { TerminalState } from './TerminalSession';
+import { useEffect, useRef } from 'react';
 export type TerminalTab = { id: string; name: string };
 export default function TerminalToolbar({
   tabs,
@@ -45,10 +46,15 @@ export default function TerminalToolbar({
   onExpand: () => void;
   onClose: () => void;
 }) {
+  const activeTab = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    // 窄窗口新增或切换会话时，让选中的标签进入可视区，不移动键盘焦点。
+    if (!log) activeTab.current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, [active, log, tabs.length]);
   return (
     <header className="terminal-heading">
       <div className="terminal-brand">
-        <SquareTerminal size={18} />
+        <SquareTerminal size={16} />
         <strong>SSH 终端</strong>
       </div>
       <div className="terminal-tabs" role="tablist" aria-label="SSH 终端会话">
@@ -59,6 +65,7 @@ export default function TerminalToolbar({
           >
             <button
               role="tab"
+              ref={!log && active === tab.id ? activeTab : undefined}
               aria-selected={!log && active === tab.id}
               onClick={() => onSelect(tab.id)}
               title={tab.name}
@@ -89,7 +96,7 @@ export default function TerminalToolbar({
         disabled={tabs.length >= 4}
         onClick={onAdd}
       >
-        <Plus size={17} />
+        <Plus size={15} />
       </button>
       <div className="terminal-tools">
         <button aria-label="查看日志" title="查看日志" aria-pressed={log} onClick={onLog}>
@@ -102,7 +109,7 @@ export default function TerminalToolbar({
           disabled={log || !tabs.length}
           onClick={onSearch}
         >
-          <Search size={17} />
+          <Search size={15} />
         </button>
         <button
           aria-label="切换终端分屏"
@@ -111,7 +118,7 @@ export default function TerminalToolbar({
           disabled={tabs.length < 2 || log}
           onClick={onSplit}
         >
-          <Columns2 size={17} />
+          <Columns2 size={15} />
         </button>
         <button
           aria-label={expanded ? '还原终端高度' : '展开终端'}
@@ -119,10 +126,10 @@ export default function TerminalToolbar({
           aria-pressed={expanded}
           onClick={onExpand}
         >
-          {expanded ? <Minimize2 size={17} /> : <Maximize2 size={17} />}
+          {expanded ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
         </button>
         <button aria-label="关闭终端工作台" title="关闭终端工作台" onClick={onClose}>
-          <X size={18} />
+          <X size={16} />
         </button>
       </div>
     </header>

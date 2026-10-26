@@ -1,13 +1,18 @@
-/* 浅色终端：单排左侧标签、右侧工具，按需浮动搜索；覆盖旧通用终端按钮的 auto 外边距。 */
+/* 32px 单排工具栏：下划线标签与紧凑工具保留正文空间，覆盖旧通用终端按钮样式。 */
 .terminal-panel.terminal-workspace {
   border-radius: 10px;
   border: 1px solid #e4e6f1;
   background: #ffffff;
 }
 .terminal-workspace .terminal-heading {
-  height: 44px;
-  padding: 0 14px;
-  gap: 8px;
+  height: 32px;
+  min-height: 32px;
+  flex-shrink: 0;
+  /* 通用 header 在窄窗口会换行；终端始终单排，溢出只在标签区滚动。 */
+  flex-wrap: nowrap;
+  min-width: 0;
+  padding: 0 10px;
+  gap: 6px;
   background: #f7f8fc;
   border-bottom: 1px solid #e6e8f2;
 }
@@ -24,11 +29,17 @@
 .terminal-brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 7px;
   flex-shrink: 0;
-  margin-right: 12px;
+  margin-right: 4px;
+  padding-right: 12px;
+  border-right: 1px solid #e1e4ef;
   color: #30374e;
-  font-size: 13px;
+  font-size: 12px;
+}
+.terminal-brand strong {
+  font-weight: 500;
+  white-space: nowrap;
 }
 .terminal-brand > svg {
   color: #7563df;
@@ -36,7 +47,7 @@
 .terminal-tabs {
   display: flex;
   align-self: stretch;
-  gap: 3px;
+  gap: 2px;
   min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
@@ -49,18 +60,18 @@
   position: relative;
   align-items: center;
   flex-shrink: 0;
-  padding: 0 6px 0 12px;
+  padding: 0 4px 0 10px;
   border-bottom: 2px solid transparent;
-  margin-top: 5px;
-  border-radius: 6px 6px 0 0;
+  margin-top: 0;
+  border-radius: 0;
 }
 .terminal-tab.is-active {
   border-bottom-color: #8270ec;
-  background: #eeebff;
+  background: transparent;
 }
 .terminal-workspace .terminal-tab > [role='tab'] {
-  height: 35px;
-  gap: 8px;
+  height: 28px;
+  gap: 7px;
   color: #69728a;
   font-size: 12px;
   padding: 0 5px 0 0;
@@ -70,8 +81,8 @@
   color: #5846c7;
 }
 .terminal-workspace .terminal-tab-close {
-  width: 18px;
-  height: 22px;
+  width: 24px;
+  height: 28px;
   opacity: 0;
 }
 .terminal-workspace .terminal-tab:hover .terminal-tab-close,
@@ -80,19 +91,24 @@
 }
 .terminal-workspace .terminal-heading .terminal-new {
   width: 28px;
-  height: 30px;
+  height: 28px;
 }
 .terminal-tools {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   margin-left: auto;
-  padding-left: 12px;
+  padding-left: 8px;
   flex-shrink: 0;
 }
 .terminal-workspace .terminal-tools button {
-  width: 29px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
+}
+.terminal-workspace .terminal-tools button:nth-child(2) {
+  border-left: 1px solid #e1e4ef;
+  border-radius: 0 5px 5px 0;
+  margin-left: 4px;
 }
 .terminal-workspace .terminal-heading button:hover:not(:disabled),
 .terminal-workspace .terminal-heading button[aria-pressed='true'] {

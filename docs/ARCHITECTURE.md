@@ -391,6 +391,8 @@ transfer_tcp 复用于普通和上传连接的新建 TCP 阶段：DNS 超时 10 
 
 ### 终端视觉层拆分
 
+工具栏固定为 32px，使用细下划线标识选中标签，保留 28px 工具按钮。终端显式禁用通用 header 的窄屏换行，标签区独立横向滚动；新增或切换标签时仅滚动至可见，不移动键盘焦点，不重建 SSH 通道。
+
 `TerminalPanel` 管理标签、活动窗格、分屏、搜索与展开状态；`TerminalToolbar` 只显示工具栏并转发操作，样式显式覆盖旧 `.terminal-heading button` 的 auto 外边距。`TerminalSession` 持有原 xterm/PTY 生命周期，用 ref 发布握手状态及尺寸，单纯切换标签不会重建会话。搜索框在正文右上角按需挂载，Esc 仅关闭搜索并将焦点还给 xterm。新 `.terminal-session` 作用域补齐旧 viewport 背景和水平滚动条规则，避免旧 `.terminal-body` 选择器漏掉新结构。
 
 界面验证使用 ignored 测试页导入生产组件及模拟 IPC，只验证显示与交互，不连接服务器；截图及模拟内容不能作为实际 SSH 兼容验收。
